@@ -1,7 +1,10 @@
 FROM php:8.3-apache
 
-RUN docker-php-ext-install pdo_pgsql \
-    && a2enmod rewrite headers
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libpq-dev \
+    && docker-php-ext-install pdo_pgsql \
+    && a2enmod rewrite headers \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY deploy/apache.conf /etc/apache2/sites-available/000-default.conf
 COPY . /var/www/html/
