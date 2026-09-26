@@ -1,0 +1,2416 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROYAL CASINO - Premium</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #fbbf24; --gold-2: #f59e0b; --gold-3: #fde68a;
+    --red: #dc2626; --blue: #2563eb; --green: #16a34a; --purple: #7c3aed;
+    --bg-1: #060810; --bg-2: #0c101c; --bg-3: #131a28;
+    --border: #2a3345; --text-dim: #94a3b8;
+  }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg-1); color: #e2e8f0;
+    display: flex; flex-direction: column;
+  }
+  /* Animated ambient bg */
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(circle at 15% 15%, rgba(251,191,36,.12), transparent 45%),
+      radial-gradient(circle at 85% 85%, rgba(124,58,237,.12), transparent 45%),
+      radial-gradient(circle at 50% 50%, rgba(37,99,235,.06), transparent 60%);
+    animation: bgPulse 10s ease-in-out infinite;
+  }
+  @keyframes bgPulse { 0%,100%{opacity:.7;} 50%{opacity:1;} }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, rgba(20,25,40,.98), rgba(10,14,24,.99));
+    backdrop-filter: blur(14px);
+    padding: 10px 20px; display: flex; align-items: center;
+    justify-content: space-between; border-bottom: 1px solid var(--border);
+    position: relative; z-index: 100;
+    box-shadow: 0 4px 25px rgba(0,0,0,.7);
+  }
+  header::after {
+    content: ""; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--gold-3), var(--gold), transparent);
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+  }
+  @keyframes shimmer { 0%{background-position:-200% center;} 100%{background-position:200% center;} }
+  .logo {
+    font-size: 20px; font-weight: 900; letter-spacing: 2px;
+    background: linear-gradient(135deg, #fde68a, #fbbf24, #f59e0b, #fbbf24, #fde68a);
+    background-size: 200% auto;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: goldShine 3s linear infinite;
+    display: flex; align-items: center; gap: 10px;
+  }
+  @keyframes goldShine { 0%{background-position:0% center;} 100%{background-position:200% center;} }
+  .logo::before {
+    content: "👑"; font-size: 24px;
+    -webkit-text-fill-color: initial;
+    filter: drop-shadow(0 0 10px rgba(251,191,36,.9));
+    animation: crownFloat 3s ease-in-out infinite;
+  }
+  @keyframes crownFloat { 0%,100%{transform:translateY(0) rotate(0);} 50%{transform:translateY(-4px) rotate(-5deg);} }
+
+  .vip-badge {
+    padding: 4px 10px; border-radius: 12px;
+    font-size: 11px; font-weight: 900; letter-spacing: 1px;
+    text-transform: uppercase; border: 1px solid currentColor;
+    text-shadow: 0 0 10px currentColor;
+    display: inline-flex; align-items: center; gap: 4px;
+    cursor: pointer; transition: .2s;
+    background: rgba(0,0,0,.3);
+  }
+  .vip-badge:hover { transform: scale(1.08); box-shadow: 0 0 20px currentColor; }
+  .vip-bronze { color: #cd7f32; }
+  .vip-silver { color: #c0c0c0; }
+  .vip-gold { color: #fbbf24; }
+  .vip-platinum { color: #a78bfa; }
+  .vip-diamond { color: #22d3ee; }
+
+  .header-right { display: flex; align-items: center; gap: 10px; }
+  .balance-pill {
+    background: linear-gradient(135deg, #1a2233, #0a0e17);
+    padding: 8px 16px; border-radius: 24px;
+    border: 1px solid var(--gold); font-size: 13px;
+    box-shadow: 0 0 20px rgba(251,191,36,.35), inset 0 0 15px rgba(251,191,36,.08);
+    position: relative; overflow: hidden; font-weight: 700;
+  }
+  .balance-pill::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(251,191,36,.2), transparent);
+    animation: pillShine 3s linear infinite;
+  }
+  @keyframes pillShine { 0%{transform:translateX(-100%);} 100%{transform:translateX(100%);} }
+  .balance-pill b { color: var(--gold); font-size: 15px; text-shadow: 0 0 10px rgba(251,191,36,.7); position: relative; }
+
+  .btn-header {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white; border: none; padding: 8px 14px;
+    border-radius: 10px; font-size: 12px; font-weight: 700;
+    cursor: pointer; transition: .2s; letter-spacing: .5px;
+    box-shadow: 0 4px 12px rgba(22,163,74,.4);
+  }
+  .btn-header.withdraw { background: linear-gradient(135deg, #2563eb, #1d4ed8); box-shadow: 0 4px 12px rgba(37,99,235,.4); }
+  .btn-header.bgm { background: linear-gradient(135deg, #7c3aed, #6d28d9); padding: 8px 12px; box-shadow: 0 4px 12px rgba(124,58,237,.4); }
+  .btn-header:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+  .bgm-playing {
+    display: inline-block; width: 6px; height: 6px;
+    background: #4ade80; border-radius: 50%;
+    box-shadow: 0 0 10px #4ade80;
+    animation: bgmPulse 1s infinite;
+  }
+  @keyframes bgmPulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.4;transform:scale(.7);} }
+
+  /* LAYOUT */
+  .layout { display: flex; flex: 1; min-height: 0; position: relative; z-index: 1; }
+
+  /* SIDEBAR */
+  aside {
+    width: 230px;
+    background: linear-gradient(180deg, rgba(15,20,32,.98), rgba(6,8,16,.99));
+    border-right: 1px solid var(--border);
+    padding: 12px 0; overflow-y: auto;
+  }
+  aside::-webkit-scrollbar { width: 4px; }
+  aside::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+  .menu-item {
+    padding: 11px 20px; cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; gap: 12px;
+    border-left: 3px solid transparent;
+    transition: all .25s; position: relative;
+  }
+  .menu-item .ico {
+    font-size: 18px;
+    filter: drop-shadow(0 0 5px rgba(251,191,36,.4));
+    transition: transform .3s;
+  }
+  .menu-item:hover { background: rgba(251,191,36,.06); }
+  .menu-item:hover .ico { transform: scale(1.2) rotate(-8deg); }
+  .menu-item.active {
+    background: linear-gradient(90deg, rgba(251,191,36,.18), transparent);
+    border-left-color: var(--gold); color: var(--gold); font-weight: 700;
+    box-shadow: inset 0 0 25px rgba(251,191,36,.06);
+  }
+  .menu-item.active::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--gold); box-shadow: 0 0 15px var(--gold);
+    animation: menuPulse 1.5s infinite;
+  }
+  @keyframes menuPulse { 0%,100%{opacity:1;} 50%{opacity:.5;} }
+  .menu-item.disabled { opacity: .4; cursor: not-allowed; }
+  .menu-title {
+    padding: 14px 20px 6px; font-size: 10px;
+    text-transform: uppercase; color: #64748b;
+    letter-spacing: 1.5px; font-weight: 800;
+  }
+  .badge-count {
+    margin-left: auto; background: var(--red); color: white;
+    font-size: 10px; padding: 2px 7px; border-radius: 10px;
+    font-weight: 900; box-shadow: 0 0 10px rgba(220,38,38,.6);
+    animation: badgePulse 1.5s infinite;
+  }
+  @keyframes badgePulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
+
+  /* MAIN */
+  main {
+    flex: 1; padding: 18px; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  main::-webkit-scrollbar { width: 6px; }
+  main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .game-view { display: none; flex-direction: column; gap: 14px; }
+  .game-view.active { display: flex; animation: viewEnter .4s ease; }
+  @keyframes viewEnter { from{opacity:0;transform:translateY(15px);} to{opacity:1;transform:translateY(0);} }
+
+  /* GAME PANEL */
+  .game-panel {
+    background: linear-gradient(160deg, rgba(19,26,40,.92), rgba(10,14,24,.98));
+    border: 1px solid var(--border); border-radius: 18px;
+    padding: 20px; position: relative;
+    box-shadow: 0 12px 45px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.04);
+    overflow: hidden;
+  }
+  .game-panel::before {
+    content: ""; position: absolute; inset: 0; border-radius: 18px; padding: 1px;
+    background: linear-gradient(135deg, rgba(251,191,36,.35), transparent 40%, rgba(124,58,237,.2));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    pointer-events: none;
+  }
+  .game-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px; position: relative; z-index: 1;
+  }
+  .game-title {
+    font-size: 17px; font-weight: 900; letter-spacing: 1px;
+    background: linear-gradient(135deg, #fff, var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .timer-box { text-align: right; }
+  .timer-label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+  .timer {
+    font-size: 30px; font-weight: 900; color: var(--green);
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 25px rgba(22,163,74,.7);
+  }
+  .timer.urgent { color: var(--red); text-shadow: 0 0 30px rgba(220,38,38,.9); animation: urgentPulse .5s infinite; }
+  @keyframes urgentPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
+  .timer.waiting { color: var(--gold); text-shadow: 0 0 30px rgba(251,191,36,.9); }
+
+  /* DICE */
+  .dice-area {
+    display: flex; justify-content: center; gap: 25px;
+    margin: 25px 0; min-height: 105px;
+  }
+  .die {
+    width: 92px; height: 92px;
+    background: linear-gradient(145deg, #fff, #e2e8f0);
+    color: #0f172a; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 52px; font-weight: 900;
+    box-shadow: 0 12px 30px rgba(0,0,0,.55), inset 0 -5px 0 rgba(0,0,0,.15), inset 0 5px 0 rgba(255,255,255,.7);
+  }
+  .die.rolling { animation: shake .3s infinite; }
+  @keyframes shake {
+    0%,100%{transform:rotate(-12deg) scale(1.05);}
+    25%{transform:rotate(8deg) scale(1.1) translateY(-8px);}
+    50%{transform:rotate(-6deg) scale(1.05);}
+    75%{transform:rotate(12deg) scale(1.1) translateY(-8px);}
+  }
+  .die.tai { box-shadow: 0 10px 45px rgba(220,38,38,.8), 0 0 65px rgba(220,38,38,.5); }
+  .die.xiu { box-shadow: 0 10px 45px rgba(37,99,235,.8), 0 0 65px rgba(37,99,235,.5); }
+  .die.triple { box-shadow: 0 10px 45px rgba(124,58,237,.9), 0 0 85px rgba(124,58,237,.7); animation: tripleGlow 1s infinite; }
+  @keyframes tripleGlow { 0%,100%{transform:scale(1);} 50%{transform:scale(1.08);} }
+
+  .result-line {
+    text-align: center; font-size: 21px; font-weight: 900;
+    min-height: 30px; margin: 10px 0; letter-spacing: .5px;
+  }
+  .result-line.tai { color: #f87171; text-shadow: 0 0 22px rgba(248,113,113,.7); }
+  .result-line.xiu { color: #60a5fa; text-shadow: 0 0 22px rgba(96,165,250,.7); }
+  .result-line.triple { color: #a78bfa; text-shadow: 0 0 22px rgba(167,139,250,.7); }
+  .result-line.green { color: #4ade80; text-shadow: 0 0 22px rgba(74,222,128,.7); }
+  .result-line.red { color: #f87171; text-shadow: 0 0 22px rgba(248,113,113,.7); }
+  .result-line.big-win { animation: bigWin .7s ease; }
+  @keyframes bigWin { 0%{transform:scale(1);} 30%{transform:scale(1.5);} 60%{transform:scale(.95);} 100%{transform:scale(1);} }
+
+  /* STREAK */
+  .streak-display {
+    text-align: center; font-weight: 900;
+    padding: 8px 14px; border-radius: 12px;
+    display: inline-block; margin: 0 auto;
+    background: linear-gradient(135deg, rgba(251,191,36,.15), rgba(220,38,38,.1));
+    border: 1px solid var(--gold);
+    font-size: 14px; letter-spacing: 1px;
+    box-shadow: 0 0 25px rgba(251,191,36,.3);
+  }
+  .streak-display .streak-num {
+    color: var(--gold); font-size: 20px;
+    text-shadow: 0 0 15px rgba(251,191,36,.9);
+  }
+  .streak-display.hot { animation: streakHot 0.6s infinite; }
+  @keyframes streakHot {
+    0%,100%{transform:scale(1);box-shadow:0 0 25px rgba(251,191,36,.3);}
+    50%{transform:scale(1.05);box-shadow:0 0 40px rgba(251,191,36,.7);}
+  }
+
+  /* BET BOARD */
+  .bet-board {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; margin: 18px 0 10px;
+  }
+  .bet-cell {
+    background: linear-gradient(145deg, #1a2233, #0a0e17);
+    border: 2px solid var(--border); border-radius: 12px;
+    padding: 15px 8px; text-align: center; cursor: pointer;
+    transition: all .25s; user-select: none;
+  }
+  .bet-cell:hover { border-color: #475569; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,.4); }
+  .bet-cell.selected {
+    border-color: var(--gold);
+    background: linear-gradient(145deg, #2a2510, #1a1a0f);
+    animation: cellPulse 1.5s infinite;
+  }
+  @keyframes cellPulse {
+    0%,100%{box-shadow:0 0 20px rgba(251,191,36,.5);}
+    50%{box-shadow:0 0 40px rgba(251,191,36,.9);}
+  }
+  .bet-cell .label { font-size: 14px; font-weight: 900; letter-spacing: .5px; }
+  .bet-cell .odds { font-size: 10px; color: var(--text-dim); margin-top: 3px; font-weight: 700; }
+  .bet-cell.tai .label { color: #f87171; }
+  .bet-cell.xiu .label { color: #60a5fa; }
+  .bet-cell.chan .label { color: #4ade80; }
+  .bet-cell.le .label { color: var(--gold); }
+  .bet-cell.triple .label { color: #a78bfa; }
+  .bet-cell.triple { grid-column: span 2; }
+  .bet-cell.total .label { color: #f472b6; }
+  .bet-cell.total { grid-column: span 2; }
+  .bet-cell.player .label { color: #60a5fa; }
+  .bet-cell.banker .label { color: #f87171; }
+  .bet-cell.tie .label { color: #4ade80; }
+  .bet-cell.dragon .label { color: #f87171; }
+  .bet-cell.tiger .label { color: #60a5fa; }
+
+  /* CHIPS */
+  .bet-controls { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+  .chip {
+    width: 52px; height: 52px; border-radius: 50%;
+    border: 3px dashed rgba(255,255,255,.75);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 900; cursor: pointer;
+    color: white; text-shadow: 0 1px 3px rgba(0,0,0,.7);
+    transition: all .2s;
+    box-shadow: 0 6px 18px rgba(0,0,0,.55), inset 0 -3px 0 rgba(0,0,0,.35), inset 0 3px 0 rgba(255,255,255,.35);
+    position: relative;
+  }
+  .chip::after {
+    content: ""; position: absolute; inset: 6px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.45);
+  }
+  .chip:hover { transform: translateY(-5px) scale(1.06); }
+  .chip:active { transform: translateY(0) scale(.95); }
+  .chip:nth-child(1) { background: radial-gradient(circle at 30% 30%, #ef4444, #991b1b); }
+  .chip:nth-child(2) { background: radial-gradient(circle at 30% 30%, #3b82f6, #1e40af); }
+  .chip:nth-child(3) { background: radial-gradient(circle at 30% 30%, #22c55e, #166534); }
+  .chip:nth-child(4) { background: radial-gradient(circle at 30% 30%, #a855f7, #5b21b6); }
+
+  .bet-input {
+    flex: 1; min-width: 130px; padding: 12px;
+    border-radius: 10px; border: 1px solid var(--border);
+    background: rgba(10,14,23,.9); color: var(--gold);
+    font-size: 16px; font-weight: 900; text-align: center;
+    font-variant-numeric: tabular-nums;
+    transition: all .2s;
+  }
+  .bet-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 20px rgba(251,191,36,.5); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white; border: none; padding: 13px 26px;
+    border-radius: 12px; font-size: 14px; font-weight: 900;
+    cursor: pointer; letter-spacing: 1px; transition: all .2s;
+    box-shadow: 0 6px 20px rgba(22,163,74,.5), inset 0 1px 0 rgba(255,255,255,.25);
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::before {
+    content: ""; position: absolute; top: 50%; left: 50%;
+    width: 0; height: 0; background: rgba(255,255,255,.4);
+    border-radius: 50%; transform: translate(-50%,-50%);
+    transition: width .6s, height .6s;
+  }
+  .btn-primary:active::before { width: 400px; height: 400px; }
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 35px rgba(22,163,74,.7), inset 0 1px 0 rgba(255,255,255,.25);
+  }
+  .btn-primary:disabled { opacity: .4; cursor: not-allowed; background: #334155; box-shadow: none; }
+
+  /* HISTORY */
+  .history-panel {
+    background: linear-gradient(160deg, rgba(19,26,40,.9), rgba(10,14,24,.96));
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 16px 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.35);
+  }
+  .panel-title {
+    font-size: 12px; text-transform: uppercase;
+    color: var(--text-dim); letter-spacing: 1.5px;
+    margin-bottom: 12px; display: flex;
+    justify-content: space-between; align-items: center;
+    font-weight: 800;
+  }
+  .cau-row { display: flex; gap: 7px; flex-wrap: wrap; }
+  .cau-dot {
+    width: 33px; height: 33px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 900; color: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,.5), inset 0 -2px 0 rgba(0,0,0,.35);
+    animation: dotEnter .3s ease;
+  }
+  @keyframes dotEnter { from{transform:scale(0) rotate(-180deg);} to{transform:scale(1) rotate(0);} }
+  .cau-dot.tai, .cau-dot.banker { background: linear-gradient(145deg, #ef4444, #991b1b); }
+  .cau-dot.xiu, .cau-dot.player { background: linear-gradient(145deg, #3b82f6, #1e40af); }
+  .cau-dot.triple { background: linear-gradient(145deg, #a78bfa, #6d28d9); }
+  .cau-dot.tie, .cau-dot.chan { background: linear-gradient(145deg, #4ade80, #15803d); }
+  .cau-dot.le { background: linear-gradient(145deg, #fbbf24, #d97706); }
+
+  /* STATS */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px; margin-top: 10px;
+  }
+  .stat-card {
+    background: linear-gradient(145deg, #0f1420, #060810);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 13px; text-align: center;
+    transition: all .3s; position: relative; overflow: hidden;
+  }
+  .stat-card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0; transition: opacity .3s;
+  }
+  .stat-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+  .stat-card:hover::before { opacity: 1; }
+  .stat-card .label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+  .stat-card .value { font-size: 21px; font-weight: 900; color: var(--gold); margin-top: 5px; text-shadow: 0 0 15px rgba(251,191,36,.5); }
+
+  /* VIP */
+  .vip-card {
+    background: linear-gradient(135deg, #1a2233, #0a0e17);
+    border: 2px solid var(--gold); border-radius: 18px;
+    padding: 22px; text-align: center;
+    box-shadow: 0 12px 45px rgba(251,191,36,.25);
+    position: relative; overflow: hidden;
+  }
+  .vip-card::before {
+    content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(251,191,36,.12), transparent);
+    animation: vipShine 5s linear infinite;
+  }
+  @keyframes vipShine { 0%{transform:rotate(0);} 100%{transform:rotate(360deg);} }
+  .vip-tier-icon { font-size: 64px; margin-bottom: 8px; filter: drop-shadow(0 0 25px currentColor); position: relative; }
+  .vip-tier-name { font-size: 26px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; position: relative; }
+  .vip-progress-bar {
+    background: rgba(0,0,0,.5); height: 14px; border-radius: 7px;
+    overflow: hidden; margin: 15px 0 8px; position: relative;
+    border: 1px solid rgba(251,191,36,.2);
+  }
+  .vip-progress-fill {
+    height: 100%; border-radius: 7px; transition: width .5s;
+    background: linear-gradient(90deg, var(--gold), var(--gold-3), var(--gold));
+    background-size: 200% auto;
+    box-shadow: 0 0 20px var(--gold);
+    animation: progressShine 2s linear infinite;
+  }
+  @keyframes progressShine { 0%{background-position:0% center;} 100%{background-position:200% center;} }
+  .vip-info { font-size: 13px; color: var(--text-dim); position: relative; font-weight: 600; }
+  .vip-benefits { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; position: relative; }
+  .vip-benefit {
+    background: rgba(0,0,0,.4); padding: 10px; border-radius: 10px;
+    font-size: 12px; color: #cbd5e1; border: 1px solid rgba(251,191,36,.15);
+  }
+  .vip-benefit b { color: var(--gold); display: block; margin-bottom: 3px; font-size: 10px; letter-spacing: 1px; }
+
+  /* QUEST */
+  .quest-list { display: flex; flex-direction: column; gap: 10px; }
+  .quest-item {
+    background: linear-gradient(145deg, #0f1420, #060810);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; display: flex; align-items: center; gap: 14px;
+    transition: all .25s;
+  }
+  .quest-item.done { border-color: var(--green); box-shadow: 0 0 20px rgba(22,163,74,.25); }
+  .quest-icon {
+    font-size: 28px; width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(251,191,36,.1); border-radius: 12px;
+  }
+  .quest-info { flex: 1; }
+  .quest-name { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .quest-progress-text { font-size: 11px; color: #64748b; margin-bottom: 6px; font-weight: 700; }
+  .quest-progress-bar { background: rgba(0,0,0,.5); height: 6px; border-radius: 3px; overflow: hidden; }
+  .quest-progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-3));
+    transition: width .4s; border-radius: 3px;
+    box-shadow: 0 0 10px rgba(251,191,36,.6);
+  }
+  .quest-reward { font-size: 12px; font-weight: 900; color: var(--gold); text-align: center; min-width: 90px; }
+  .quest-claim {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white; border: none; padding: 7px 12px;
+    border-radius: 8px; font-size: 11px; font-weight: 900;
+    cursor: pointer; margin-top: 6px; width: 100%;
+    animation: claimPulse 1.5s infinite;
+    letter-spacing: .5px;
+  }
+  @keyframes claimPulse {
+    0%,100% { box-shadow: 0 0 0 rgba(22,163,74,.7); }
+    50% { box-shadow: 0 0 20px rgba(22,163,74,.9); }
+  }
+  .quest-claim:disabled { background: #334155; cursor: not-allowed; animation: none; }
+
+  /* LEADERBOARD */
+  .leaderboard-list { display: flex; flex-direction: column; gap: 8px; }
+  .lb-item {
+    background: linear-gradient(145deg, #0f1420, #060810);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 12px 16px; display: flex; align-items: center; gap: 14px;
+    transition: all .25s;
+  }
+  .lb-item.top-1 {
+    background: linear-gradient(135deg, rgba(251,191,36,.2), rgba(220,38,38,.1));
+    border-color: var(--gold); box-shadow: 0 0 30px rgba(251,191,36,.4);
+  }
+  .lb-item.top-2 { background: linear-gradient(135deg, rgba(192,192,192,.15), transparent); border-color: #c0c0c0; }
+  .lb-item.top-3 { background: linear-gradient(135deg, rgba(205,127,50,.15), transparent); border-color: #cd7f32; }
+  .lb-item.me {
+    background: linear-gradient(145deg, rgba(37,99,235,.2), transparent);
+    border-color: var(--blue);
+    animation: meGlow 2s infinite;
+  }
+  @keyframes meGlow {
+    0%,100%{ box-shadow: 0 0 15px rgba(37,99,235,.3); }
+    50%{ box-shadow: 0 0 35px rgba(37,99,235,.6); }
+  }
+  .lb-rank {
+    font-size: 22px; font-weight: 900; min-width: 40px;
+    text-align: center; color: var(--gold);
+    text-shadow: 0 0 15px rgba(251,191,36,.6);
+  }
+  .lb-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(145deg, #1a2233, #0a0e17);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; border: 2px solid var(--border);
+  }
+  .lb-name { flex: 1; font-weight: 700; font-size: 14px; }
+  .lb-pnl { font-weight: 900; font-size: 15px; }
+  .lb-pnl.win { color: #4ade80; text-shadow: 0 0 12px rgba(74,222,128,.5); }
+  .lb-pnl.lose { color: #f87171; }
+
+  /* MODAL */
+  .modal-bg {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.88); backdrop-filter: blur(10px);
+    z-index: 1000; align-items: center; justify-content: center;
+  }
+  .modal-bg.show { display: flex; animation: fadeIn .3s; }
+  @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+  .modal {
+    background: linear-gradient(160deg, #1a2233, #0a0e17);
+    padding: 28px; border-radius: 20px;
+    max-width: 460px; width: 90%;
+    border: 1px solid var(--gold);
+    box-shadow: 0 20px 70px rgba(0,0,0,.9), 0 0 50px rgba(251,191,36,.25);
+    animation: modalPop .3s ease;
+    max-height: 85vh; overflow-y: auto;
+  }
+  @keyframes modalPop { from{transform:scale(.85) translateY(20px); opacity:0;} to{transform:scale(1) translateY(0); opacity:1;} }
+  .modal h3 { margin-bottom: 14px; color: var(--gold); font-size: 19px; }
+  .modal p { color: var(--text-dim); font-size: 14px; margin-bottom: 18px; line-height: 1.6; }
+  .modal button.close-btn {
+    width: 100%; padding: 14px; border-radius: 10px; border: none;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white; font-size: 14px; font-weight: 900;
+    cursor: pointer; letter-spacing: 1px;
+  }
+
+  /* CHAT */
+  .chat-btn {
+    position: fixed; bottom: 22px; right: 22px;
+    width: 58px; height: 58px; border-radius: 50%;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white; border: none; font-size: 25px;
+    cursor: pointer; box-shadow: 0 10px 30px rgba(22,163,74,.7);
+    z-index: 500; animation: chatFloat 3s infinite;
+  }
+  @keyframes chatFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
+  .chat-btn:hover { transform: scale(1.1) rotate(10deg); }
+  .chat-btn::after {
+    content: ""; position: absolute; inset: -4px; border-radius: 50%;
+    border: 2px solid #16a34a; animation: chatPulse 2s ease-out infinite;
+  }
+  @keyframes chatPulse { 0%{transform:scale(1); opacity:1;} 100%{transform:scale(1.5); opacity:0;} }
+
+  /* TOAST */
+  .toast {
+    position: fixed; top: 85px; left: 50%;
+    transform: translateX(-50%) translateY(-30px) scale(.9);
+    background: linear-gradient(135deg, #1a2233, #0a0e17);
+    border: 2px solid var(--border); padding: 15px 30px;
+    border-radius: 14px; font-weight: 900; font-size: 15px;
+    opacity: 0; transition: all .35s cubic-bezier(.34,1.56,.64,1);
+    pointer-events: none; z-index: 2000;
+    box-shadow: 0 20px 50px rgba(0,0,0,.7); letter-spacing: .5px;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+  .toast.win { border-color: var(--green); color: #4ade80; box-shadow: 0 20px 50px rgba(22,163,74,.5); }
+  .toast.lose { border-color: var(--red); color: #f87171; box-shadow: 0 20px 50px rgba(220,38,38,.5); }
+  .toast.quest { border-color: var(--gold); color: var(--gold); box-shadow: 0 20px 50px rgba(251,191,36,.5); }
+  .toast.streak { border-color: #f97316; color: #fb923c; box-shadow: 0 20px 50px rgba(249,115,22,.6); }
+
+  /* CONFETTI */
+  .celebration { position: fixed; inset: 0; pointer-events: none; z-index: 1500; display: none; }
+  .celebration.show { display: block; }
+  .confetti {
+    position: absolute; width: 12px; height: 12px; top: -20px;
+    animation: fall linear forwards;
+  }
+  @keyframes fall { to{transform:translateY(105vh) rotate(720deg);} }
+
+  /* COINS XOC DIA */
+  .coin-area {
+    display: flex; justify-content: center; gap: 18px;
+    margin: 25px 0; min-height: 100px;
+  }
+  .coin {
+    width: 85px; height: 85px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 38px; font-weight: 900;
+    box-shadow: 0 10px 25px rgba(0,0,0,.6), inset 0 -4px 0 rgba(0,0,0,.35), inset 0 4px 0 rgba(255,255,255,.6);
+  }
+  .coin.red { background: radial-gradient(circle at 30% 30%, #ef4444, #991b1b); color: #fff; }
+  .coin.white { background: radial-gradient(circle at 30% 30%, #fff, #cbd5e1); color: var(--red); }
+  .coin.rolling { animation: spin .5s infinite; }
+  @keyframes spin { 0%{transform:rotateY(0) scale(1);} 50%{transform:rotateY(180deg) scale(1.15);} 100%{transform:rotateY(360deg) scale(1);} }
+
+  /* CARDS BACCARAT */
+  .bac-table {
+    display: flex; justify-content: space-around; align-items: flex-start;
+    margin: 20px 0; gap: 20px; padding: 20px;
+    background: radial-gradient(ellipse at center, rgba(22,101,52,.35), transparent 70%),
+                linear-gradient(160deg, rgba(15,20,32,.9), rgba(10,14,24,.96));
+    border-radius: 20px; border: 2px solid rgba(251,191,36,.2);
+    position: relative;
+  }
+  .bac-table::before {
+    content: ""; position: absolute; inset: 8px; border-radius: 14px;
+    border: 1px dashed rgba(251,191,36,.15); pointer-events: none;
+  }
+  .bac-side { text-align: center; flex: 1; position: relative; z-index: 1; }
+  .bac-side h3 {
+    font-size: 14px; text-transform: uppercase; color: var(--text-dim);
+    margin-bottom: 10px; letter-spacing: 2px; font-weight: 900;
+  }
+  .bac-cards { display: flex; gap: 10px; justify-content: center; min-height: 110px; }
+  .card {
+    width: 72px; height: 105px;
+    background: linear-gradient(145deg, #fefefe, #e2e8f0);
+    border-radius: 10px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: #0f172a; font-weight: 900;
+    box-shadow: 0 10px 25px rgba(0,0,0,.55);
+    animation: dealIn .4s cubic-bezier(.34,1.56,.64,1);
+    position: relative;
+  }
+  .card::before, .card::after {
+    content: attr(data-rank); position: absolute;
+    font-size: 10px; font-weight: 900;
+  }
+  .card::before { top: 4px; left: 6px; }
+  .card::after { bottom: 4px; right: 6px; transform: rotate(180deg); }
+  @keyframes dealIn { from{transform:translateY(-60px) rotate(-25deg) scale(.6); opacity:0;} to{transform:translateY(0) rotate(0) scale(1); opacity:1;} }
+  .card .rank { font-size: 26px; line-height: 1; }
+  .card .suit { font-size: 22px; line-height: 1; }
+  .card.red { color: var(--red); }
+  .bac-score {
+    font-size: 32px; font-weight: 900; color: var(--gold);
+    margin-top: 10px; text-shadow: 0 0 25px rgba(251,191,36,.75);
+  }
+  .bac-bet-board {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 15px 0;
+  }
+  .bac-bet-board .bet-cell { padding: 20px 8px; }
+
+  /* DRAGON TIGER */
+  .dt-table {
+    display: flex; justify-content: space-around; align-items: center;
+    margin: 20px 0; gap: 20px; padding: 22px 20px;
+    background: radial-gradient(ellipse at center, rgba(220,38,38,.18), transparent 70%),
+                linear-gradient(160deg, rgba(15,20,32,.9), rgba(10,14,24,.96));
+    border-radius: 20px; border: 2px solid rgba(251,191,36,.2);
+  }
+  .dt-side { text-align: center; flex: 1; }
+  .dt-side h3 {
+    font-size: 17px; text-transform: uppercase;
+    margin-bottom: 12px; letter-spacing: 3px; font-weight: 900;
+  }
+  .dt-side.dragon h3 { color: #f87171; text-shadow: 0 0 20px rgba(248,113,113,.7); }
+  .dt-side.tiger h3 { color: #60a5fa; text-shadow: 0 0 20px rgba(96,165,250,.7); }
+  .dt-side .dt-icon { font-size: 42px; margin-bottom: 8px; filter: drop-shadow(0 0 15px currentColor); }
+  .dt-card-area { min-height: 120px; display: flex; justify-content: center; }
+  .dt-card {
+    width: 85px; height: 125px;
+    background: linear-gradient(145deg, #fefefe, #e2e8f0);
+    border-radius: 12px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: #0f172a; font-weight: 900;
+    box-shadow: 0 12px 30px rgba(0,0,0,.55);
+    animation: dealIn .5s cubic-bezier(.34,1.56,.64,1);
+  }
+  .dt-card.red { color: var(--red); }
+  .dt-card .rank { font-size: 32px; line-height: 1; }
+  .dt-card .suit { font-size: 28px; line-height: 1; }
+  .dt-score {
+    font-size: 28px; font-weight: 900; color: var(--gold);
+    margin-top: 8px; text-shadow: 0 0 25px rgba(251,191,36,.75);
+  }
+
+  /* SICBO */
+  .sicbo-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+    gap: 9px; margin: 15px 0;
+  }
+  .sicbo-cell {
+    background: linear-gradient(145deg, #1a2233, #0a0e17);
+    border: 2px solid var(--border); border-radius: 10px;
+    padding: 11px 6px; text-align: center; cursor: pointer;
+    transition: all .2s;
+  }
+  .sicbo-cell:hover { border-color: #475569; transform: translateY(-2px); }
+  .sicbo-cell.selected {
+    border-color: var(--gold);
+    background: linear-gradient(145deg, #2a2510, #1a1a0f);
+    box-shadow: 0 0 18px rgba(251,191,36,.6);
+  }
+  .sicbo-cell .label { font-size: 12px; font-weight: 900; }
+  .sicbo-cell .odds { font-size: 9px; color: var(--text-dim); margin-top: 3px; font-weight: 700; }
+  .sicbo-cell.small { color: #4ade80; }
+  .sicbo-cell.big { color: #f87171; }
+  .sicbo-cell.odd { color: var(--gold); }
+  .sicbo-cell.even { color: #60a5fa; }
+  .sicbo-cell.triple { color: #a78bfa; }
+  .sicbo-cell.total-spec { color: #f472b6; font-size: 11px; }
+
+  /* SLOT */
+  .slot-machine {
+    background: linear-gradient(145deg, #1a2233, #0a0e17);
+    border: 3px solid var(--gold); border-radius: 24px;
+    padding: 28px; margin: 18px auto; max-width: 540px;
+    box-shadow: 0 18px 55px rgba(0,0,0,.7), 0 0 45px rgba(251,191,36,.35);
+    position: relative;
+  }
+  .slot-machine::before {
+    content: "★ ★ ★"; position: absolute; top: -14px; left: 50%;
+    transform: translateX(-50%); background: var(--bg-1);
+    padding: 0 18px; color: var(--gold);
+    font-size: 16px; letter-spacing: 10px;
+    text-shadow: 0 0 10px var(--gold);
+  }
+  .reels {
+    display: flex; justify-content: center; gap: 14px;
+    margin-bottom: 22px; padding: 14px;
+    background: rgba(0,0,0,.5); border-radius: 16px;
+    box-shadow: inset 0 0 35px rgba(0,0,0,.8);
+  }
+  .reel {
+    width: 108px; height: 128px;
+    background: linear-gradient(145deg, #f8fafc, #cbd5e1);
+    border-radius: 14px; display: flex; align-items: center; justify-content: center;
+    font-size: 66px;
+    box-shadow: inset 0 0 25px rgba(0,0,0,.2), 0 6px 18px rgba(0,0,0,.55);
+  }
+  .reel.spinning { animation: reelSpin .12s infinite; filter: blur(2px); }
+  @keyframes reelSpin { 0%{transform:translateY(0);} 50%{transform:translateY(-15px);} 100%{transform:translateY(0);} }
+  .reel.win {
+    animation: reelWin .5s infinite;
+    box-shadow: inset 0 0 30px rgba(251,191,36,.5), 0 0 35px rgba(251,191,36,.85);
+  }
+  @keyframes reelWin { 0%,100%{transform:scale(1);} 50%{transform:scale(1.08);} }
+  .slot-paytable {
+    margin-top: 18px; padding: 14px; background: rgba(0,0,0,.4);
+    border-radius: 12px; font-size: 12px; color: var(--text-dim);
+    line-height: 2; text-align: center; font-weight: 700;
+  }
+  .slot-paytable span { color: var(--gold); font-weight: 900; margin: 0 8px; }
+
+  /* SPORTS */
+  .match-list { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
+  .match {
+    background: linear-gradient(145deg, #0f1420, #060810);
+    border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px; display: flex; justify-content: space-between;
+    align-items: center; gap: 15px; transition: all .25s;
+  }
+  .match:hover { border-color: var(--gold); transform: translateX(6px); box-shadow: -4px 0 0 var(--gold), 0 10px 30px rgba(0,0,0,.4); }
+  .match-info { flex: 1; }
+  .match-info .teams { font-weight: 800; margin-bottom: 5px; font-size: 14px; }
+  .match-info .time { font-size: 11px; color: #64748b; font-weight: 700; }
+  .match-odds { display: flex; gap: 8px; }
+  .odd-btn {
+    background: linear-gradient(145deg, #1a2233, #0a0e17);
+    border: 1px solid var(--border); color: #e2e8f0;
+    padding: 9px 14px; border-radius: 10px;
+    cursor: pointer; font-size: 12px; font-weight: 800;
+    min-width: 76px; text-align: center; transition: all .2s;
+  }
+  .odd-btn:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .odd-btn.selected {
+    background: linear-gradient(145deg, #2a2510, #1a1a0f);
+    border-color: var(--gold); color: var(--gold);
+    box-shadow: 0 0 18px rgba(251,191,36,.5);
+  }
+  .odd-btn .odd-label { display: block; font-size: 9px; color: #64748b; letter-spacing: 1px; font-weight: 800; }
+  .odd-btn.selected .odd-label { color: var(--gold); }
+  .odd-btn .odd-value { display: block; font-size: 15px; margin-top: 2px; }
+
+  /* LOTTERY */
+  .lottery-grid {
+    display: grid; grid-template-columns: repeat(10, 1fr);
+    gap: 7px; margin: 15px 0;
+  }
+  .lottery-num {
+    aspect-ratio: 1;
+    background: linear-gradient(145deg, #1a2233, #0a0e17);
+    border: 1px solid var(--border); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; cursor: pointer; font-weight: 800;
+    transition: all .2s;
+  }
+  .lottery-num:hover { border-color: var(--gold); transform: scale(1.12); z-index: 2; }
+  .lottery-num.selected {
+    background: linear-gradient(145deg, #dc2626, #991b1b);
+    border-color: var(--gold); color: white; transform: scale(1.15);
+    box-shadow: 0 0 22px rgba(220,38,38,.7); z-index: 3;
+  }
+  .lottery-num.win {
+    background: linear-gradient(145deg, #16a34a, #15803d);
+    border-color: #4ade80; color: white;
+    animation: winNum 1s infinite; z-index: 4;
+  }
+  @keyframes winNum {
+    0%,100% { transform: scale(1.15); }
+    50% { transform: scale(1.35); box-shadow: 0 0 35px rgba(74,222,128,.9); }
+  }
+
+  /* BAU CUA */
+  .baucua-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin: 15px 0;
+  }
+  .baucua-cell {
+    background: linear-gradient(145deg, #1a2233, #0a0e17);
+    border: 2px solid var(--border); border-radius: 14px;
+    padding: 15px 8px; text-align: center; cursor: pointer;
+    transition: all .25s;
+  }
+  .baucua-cell:hover { border-color: var(--gold); transform: translateY(-4px); }
+  .baucua-cell.selected {
+    border-color: var(--gold);
+    background: linear-gradient(145deg, #2a2510, #1a1a0f);
+    animation: cellPulse 1.5s infinite;
+  }
+  .baucua-cell .bc-icon { font-size: 42px; margin-bottom: 4px; }
+  .baucua-cell .bc-name { font-size: 13px; font-weight: 800; color: #e2e8f0; }
+  .baucua-result-area {
+    display: flex; justify-content: center; gap: 15px;
+    margin: 20px 0; min-height: 90px;
+  }
+  .baucua-die {
+    width: 85px; height: 85px;
+    background: linear-gradient(145deg, #f8fafc, #cbd5e1);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-size: 48px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.55), inset 0 -4px 0 rgba(0,0,0,.2);
+  }
+  .baucua-die.rolling { animation: shake .3s infinite; }
+
+  /* BLACKJACK */
+  .bj-table {
+    display: flex; justify-content: space-around; align-items: flex-start;
+    margin: 20px 0; gap: 20px; padding: 20px;
+    background: radial-gradient(ellipse at center, rgba(22,101,52,.35), transparent 70%),
+                linear-gradient(160deg, rgba(15,20,32,.9), rgba(10,14,24,.96));
+    border-radius: 20px; border: 2px solid rgba(251,191,36,.2);
+  }
+  .bj-side { text-align: center; flex: 1; }
+  .bj-side h3 {
+    font-size: 14px; text-transform: uppercase; color: var(--text-dim);
+    margin-bottom: 10px; letter-spacing: 2px; font-weight: 900;
+  }
+  .bj-cards { display: flex; gap: 8px; justify-content: center; min-height: 110px; flex-wrap: wrap; }
+  .bj-actions {
+    display: flex; justify-content: center; gap: 12px; margin-top: 15px; flex-wrap: wrap;
+  }
+  .bj-btn {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white; border: none; padding: 12px 24px;
+    border-radius: 10px; font-size: 13px; font-weight: 900;
+    cursor: pointer; transition: .2s; letter-spacing: 1px;
+    box-shadow: 0 5px 15px rgba(37,99,235,.4);
+  }
+  .bj-btn.hit { background: linear-gradient(135deg, #16a34a, #15803d); box-shadow: 0 5px 15px rgba(22,163,74,.4); }
+  .bj-btn.stand { background: linear-gradient(135deg, #dc2626, #991b1b); box-shadow: 0 5px 15px rgba(220,38,38,.4); }
+  .bj-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1); }
+  .bj-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+  @media (max-width: 700px) {
+    aside { width: 62px; }
+    .menu-item { padding: 12px; justify-content: center; }
+    .menu-item > span:last-child:not(.ico) { display: none; }
+    .menu-title { display: none; }
+    .bet-board, .bac-bet-board { grid-template-columns: repeat(2, 1fr); }
+    .die { width: 68px; height: 68px; font-size: 36px; }
+    .coin { width: 60px; height: 60px; font-size: 26px; }
+    .lottery-grid { grid-template-columns: repeat(6, 1fr); }
+    .card { width: 56px; height: 82px; }
+    .reel { width: 78px; height: 98px; font-size: 44px; }
+    .logo { font-size: 15px; letter-spacing: 1px; }
+    .balance-pill { padding: 6px 10px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    ROYAL CASINO
+    <span class="vip-badge vip-bronze" id="headerVip" onclick="navTo('vip')">🥉 BRONZE</span>
+  </div>
+  <div class="header-right">
+    <button class="btn-header bgm" id="bgmBtn" onclick="toggleBGM()">🎵 <span class="bgm-playing" style="display:none" id="bgmDot"></span></button>
+    <div class="balance-pill">💰 <b id="headerBalance">1,000,000</b></div>
+    <button class="btn-header" onclick="showModal('Nạp tiền','Bản demo — Không có nạp tiền thật.')">NẠP</button>
+    <button class="btn-header withdraw" onclick="showModal('Rút tiền','Bản demo — Không có rút tiền thật.')">RÚT</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside>
+    <div class="menu-title">Trò chơi</div>
+    <div class="menu-item active" data-game="taixiu"><span class="ico">🎲</span><span>Tài Xỉu</span></div>
+    <div class="menu-item" data-game="sicbo"><span class="ico">🎯</span><span>Sicbo Pro</span></div>
+    <div class="menu-item" data-game="dragon"><span class="ico">🐉</span><span>Rồng Hổ</span></div>
+    <div class="menu-item" data-game="baucua"><span class="ico">🦀</span><span>Bầu Cua</span></div>
+    <div class="menu-item" data-game="blackjack"><span class="ico">🃏</span><span>Xì Dách</span></div>
+    <div class="menu-item" data-game="xocdia"><span class="ico">🪙</span><span>Xóc Đĩa</span></div>
+    <div class="menu-item" data-game="baccarat"><span class="ico">🎴</span><span>Baccarat</span></div>
+    <div class="menu-item" data-game="slot"><span class="ico">🎰</span><span>Slot</span></div>
+    <div class="menu-item" data-game="sports"><span class="ico">⚽</span><span>Thể Thao</span></div>
+    <div class="menu-item" data-game="lottery"><span class="ico">🎲</span><span>Lô Đề</span></div>
+    <div class="menu-title">Cộng đồng</div>
+    <div class="menu-item" data-game="leaderboard"><span class="ico">🏆</span><span>BXH</span></div>
+    <div class="menu-item" data-game="quest"><span class="ico">📋</span><span>Nhiệm vụ</span><span class="badge-count" id="questBadge">0</span></div>
+    <div class="menu-item" data-game="vip"><span class="ico">👑</span><span>VIP Club</span></div>
+  </aside>
+
+  <main>
+    <!-- TAI XIU -->
+    <div class="game-view active" id="view-taixiu">
+      <div class="game-panel">
+        <div class="game-header">
+          <div class="game-title">TÀI XỈU — BÀN #001</div>
+          <div class="timer-box"><div class="timer-label">Đặt cược còn</div><div class="timer" id="txTimer">30s</div></div>
+        </div>
+        <div class="dice-area">
+          <div class="die" id="txD1">?</div><div class="die" id="txD2">?</div><div class="die" id="txD3">?</div>
+        </div>
+        <div class="result-line" id="txResult">Chọn cửa cược và đặt tiền</div>
+        <div class="bet-board" id="txBetBoard">
+          <div class="bet-cell tai" data-bet="tai"><div class="label">TÀI</div><div class="odds">1:1</div></div>
+          <div class="bet-cell xiu" data-bet="xiu"><div class="label">XỈU</div><div class="odds">1:1</div></div>
+          <div class="bet-cell chan" data-bet="chan"><div class="label">CHẴN</div><div class="odds">1:1</div></div>
+          <div class="bet-cell le" data-bet="le"><div class="label">LẺ</div><div class="odds">1:1</div></div>
+          <div class="bet-cell triple" data-bet="triple"><div class="label">BỘ BA</div><div class="odds">1:30</div></div>
+          <div class="bet-cell total" data-bet="total"><div class="label">TỔNG 4-17</div><div class="odds">1:6</div></div>
+        </div>
+        <div class="bet-controls">
+          <div class="chip" onclick="setBet('tx',10000)">10K</div>
+          <div class="chip" onclick="setBet('tx',50000)">50K</div>
+          <div class="chip" onclick="setBet('tx',100000)">100K</div>
+          <div class="chip" onclick="setBet('tx',500000)">500K</div>
+          <input type="number" class="bet-input" id="txBetAmount" value="10000" min="1000" step="1000">
+          <button class="btn-primary" id="txBtnConfirm" onclick="txPlaceBet()" disabled>XÁC NHẬN CƯỢC</button>
+        </div>
+      </div>
+      <div class="history-panel">
+        <div class="panel-title"><span>Cầu Tài Xỉu</span><span id="txCauStats" style="color:var(--gold);"></span></div>
+        <div class="cau-row" id="txCauRow"><span style="color:#64748b;font-size:13px;">Chưa có ván nào</span></div>
+      </div>
+    </div>
+
+    <!-- SICBO -->
+    <div class="game-view" id="view-sicbo">
+      <div class="game-panel">
+        <div class="game-header">
+          <div class="game-title">SICBO PRO</div>
+          <div class="timer-box"><div class="timer-label">Còn</div><div class="timer" id="sbTimer">30s</div></div>
+        </div>
+        <div class="dice-area">
+          <div class="die" id="sbD1">?</div><div class="die" id="sbD2">?</div><div class="die" id="sbD3">?</div>
+        </div>
+        <div class="result-line" id="sbResult">Chọn 1 cửa cược</div>
+        <div class="sicbo-grid" id="sbBetBoard">
+          <div class="sicbo-cell small" data-bet="small"><div class="label">NHỎ 4-10</div><div class="odds">1:1</div></div>
+          <div class="sicbo-cell big" data-bet="big"><div class="label">LỚN 11-17</div><div class="odds">1:1</div></div>
+          <div class="sicbo-cell odd" data-bet="odd"><div class="label">LẺ</div><div class="odds">1:1</div></div>
+          <div class="sicbo-cell even" data-bet="even"><div class="label">CHẴN</div><div class="odds">1:1</div></div>
+          <div class="sicbo-cell triple" data-bet="triple"><div class="label">BỘ BA</div><div class="odds">1:30</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t4"><div class="label">TỔNG 4</div><div class="odds">1:60</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t5"><div class="label">TỔNG 5</div><div class="odds">1:30</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t6"><div class="label">TỔNG 6</div><div class="odds">1:17</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t7"><div class="label">TỔNG 7</div><div class="odds">1:12</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t8"><div class="label">TỔNG 8</div><div class="odds">1:8</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t9"><div class="label">TỔNG 9</div><div class="odds">1:6</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t10"><div class="label">TỔNG 10</div><div class="odds">1:6</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t11"><div class="label">TỔNG 11</div><div class="odds">1:6</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t12"><div class="label">TỔNG 12</div><div class="odds">1:6</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t13"><div class="label">TỔNG 13</div><div class="odds">1:8</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t14"><div class="label">TỔNG 14</div><div class="odds">1:12</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t15"><div class="label">TỔNG 15</div><div class="odds">1:17</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t16"><div class="label">TỔNG 16</div><div class="odds">1:30</div></div>
+          <div class="sicbo-cell total-spec" data-bet="t17"><div class="label">TỔNG 17</div><div class="odds">1:60</div></div>
+        </div>
+        <div class="bet-controls">
+          <div class="chip" onclick="setBet('sb',10000)">10K</div>
+          <div class="chip" onclick="setBet('sb',50000)">50K</div>
+          <div class="chip" onclick="setBet('sb',100000)">100K</div>
+          <input type="number" class="bet-input" id="sbBetAmount" value="10000" min="1000" step="1000">
+          <button class="btn-primary" id="sbBtnConfirm" onclick="sbPlaceBet()" disabled>XÁC NHẬN CƯỢC</button>
+        </div>
+      </div>
+      <div class="history-panel">
+        <div class="panel-title">Lịch sử ván</div>
+        <div class="cau-row" id="sbCauRow"><span style="color:#64748b;font-size:13px;">Chưa có ván nào</span></div>
+      </div>
+    </div>
+
+    <!-- DRAGON TIGER -->
+    <div class="game-view" id="view-dragon">
+      <div class="game-panel">
+        <div class="game-header">
+          <div class="game-title">RỒNG HỔ</div>
+          <div class="timer-box"><div class="timer-label">Còn</div><div class="timer" id="dtTimer">30s</div></div>
+        </div>
+        <div class="dt-table">
+          <div class="dt-side dragon">
+            <div class="dt-icon">🐉</div><h3>RỒNG</h3>
+            <div class="dt-card-area" id="dtDragonCards"></div>
+            <div class="dt-score" id="dtDragonScore">-</div>
+          </div>
+          <div style="font-size:28px;color:var(--gold);font-weight:900;text-shadow:0 0 20px var(--gold);">VS</div>
+          <div class="dt-side tiger">
+            <div class="dt-icon">🐯</div><h3>HỔ</h3>
+            <div class="dt-card-area" id="dtTigerCards"></div>
+            <div class="dt-score" id="dtTigerScore">-</div>
+          </div>
+        </div>
+        <div class="result-line" id="dtResult">Chọn Rồng, Hổ hoặc Hòa</div>
+        <div class="bac-bet-board">
+          <div class="bet-cell dragon" data-bet="dragon" onclick="dtSelect(this,'dragon')"><div class="label">RỒNG</div><div class="odds">1:1</div></div>
+          <div class="bet-cell tie" data-bet="tie" onclick="dtSelect(this,'tie')"><div class="label">HÒA</div><div class="odds">1:8</div></div>
+          <div class="bet-cell tiger" data-bet="tiger" onclick="dtSelect(this,'tiger')"><div class="label">HỔ</div><div class="odds">1:1</div></div>
+        </div>
+        <div class="bet-controls">
+          <div class="chip" onclick="setBet('dt',10000)">10K</div>
+          <div class="chip" onclick="setBet('dt',50000)">50K</div>
+          <div class="chip" onclick="setBet('dt',100000)">100K</div>
+          <input type="number" class="bet-input" id="dtBetAmount" value="10000" min="1000" step="1000">
+          <button class="btn-primary" id="dtBtnConfirm" onclick="dtPlaceBet()" disabled>XÁC NHẬN CƯỢC</button>
+        </div>
+      </div>
+      <div class="history-panel">
+        <div class="panel-title"><span>Cầu Rồng Hổ</span><span id="dtCauStats" style="color:var(--gold);"></span></div>
+        <div class="cau-row" id="dtCauRow"><span style="color:#64748b;font-size:13px;">Chưa có ván nào</span></div>
+      </div>
+    </div>
+
+    <!-- BAU CUA -->
+    <div class="game-view" id="view-baucua">
+      <div class="game-panel">
+        <div class="game-header">
+          <div class="game-title">BẦU CUA TÔM CÁ</div>
+          <div class="timer-box"><div class="timer-label">Còn</div><div class="timer" id="bcTimer">30s</div></div>
+        </div>
+        <div class="baucua-result-area">
+          <div class="baucua-die" id="bcD1">?</div>
+          <div class="baucua-die" id="bcD2">?</div>
+          <div class="baucua-die" id="bcD3">?</div>
+        </div>
+        <div class="result-line" id="bcResult">Chọn 1 linh vật để cược</div>
+        <div class="baucua-grid" id="bcBetBoard">
+          <div class="baucua-cell" data-bet="bau"><div class="bc-icon">🍐</div><div class="bc-name">BẦU</div><div class="odds" style="font-size:11px;color:#94a3b8;">1:1</div></div>
+          <div class="baucua-cell" data-bet="cua"><div class="bc-icon">🦀</div><div class="bc-name">CUA</div><div class="odds" style="font-size:11px;color:#94a3b8;">1:1</div></div>
+          <div class="baucua-cell" data-bet="tom"><div class="bc-icon">🦐</div><div class="bc-name">TÔM</div><div class="odds" style="font-size:11px;color:#94a3b8;">1:1</div></div>
+          <div class="baucua-cell" data-bet="ca"><div class="bc-icon">🐟</div><div class="bc-name">CÁ</div><div class="odds" style="font-size:11px;color:#94a3b8;">1:1</div></div>
+          <div class="baucua-cell" data-bet="ga"><div class="bc-icon">🐓</div><div class="bc-name">GÀ</div><div class="odds" style="font-size:11px;color:#94a3b8;">1:1</div></div>
+          <div class="baucua-cell" data-bet="nai"><div class="bc-icon">🦌</div><div class="bc-name">NAI</div><div class="odds" style="font-size:11px;color:#94a3b8;">1:1</div></div>
+        </div>
+        <div class="bet-controls">
+          <div class="chip" onclick="setBet('bc',10000)">10K</div>
+          <div class="chip" onclick="setBet('bc',50000)">50K</div>
+          <div class="chip" onclick="setBet('bc',100000)">100K</div>
+          <input type="number" class="bet-input" id="bcBetAmount" value="10000" min="1000" step="1000">
+          <button class="btn-primary" id="bcBtnConfirm" onclick="bcPlaceBet()" disabled>XÁC NHẬN CƯỢC</button>
+        </div>
+      </div>
+      <div class="history-panel">
+        <div class="panel-title"><span>Cầu Bầu Cua</span><span id="bcCauStats" style="color:var(--gold);"></span></div>
+        <div class="cau-row" id="bcCauRow"><span style="color:#64748b;font-size:13px;">Chưa có ván nào</span></div>
+      </div>
+    </div>
+
+    <!-- BLACKJACK -->
+    <div class="game-view" id="view-blackjack">
+      <div class="game-panel">
+        <div class="game-title" style="text-align:center;margin-bottom:15px;">🃏 XÌ DÁCH (BLACKJACK)</div>
+        <div class="bj-table">
+          <div class="bj-side">
+            <h3>NHÀ CÁI</h3>
+            <div class="bj-cards" id="bjDealerCards"></div>
+            <div class="bac-score" id="bjDealerScore">-</div>
+          </div>
+          <div class="bj-side">
+            <h3>BẠN</h3>
+            <div class="bj-cards" id="bjPlayerCards"></div>
+            <div class="bac-score" id="bjPlayerScore">-</div>
+          </div>
+        </div>
+        <div class="result-line" id="bjResult">Đặt cược và bắt đầu</div>
+        <div class="bet-controls" id="bjBetControls">
+          <div class="chip" onclick="setBet('bj',10000)">10K</div>
+          <div class="chip" onclick="setBet('bj',50000)">50K</div>
+          <div class="chip" onclick="setBet('bj',100000)">100K</div>
+          <input type="number" class="bet-input" id="bjBetAmount" value="10000" min="1000" step="1000">
+          <button class="btn-primary" id="bjBtnDeal" onclick="bjDeal()">CHIA BÀI</button>
+        </div>
+        <div class="bj-actions" id="bjActions" style="display:none;">
+          <button class="bj-btn hit" id="bjBtnHit" onclick="bjHit()">RÚT BÀI</button>
+          <button class="bj-btn stand" id="bjBtnStand" onclick="bjStand()">DỪNG</button>
+        </div>
+      </div>
+      <div class="history-panel">
+        <div class="panel-title"><span>Cầu Xì Dách</span><span id="bjCauStats" style="color:var(--gold);"></span></div>
+        <div class="cau-row" id="bjCauRow"><span style="color:#64748b;font-size:13px;">Chưa có ván nào</span></div>
+      </div>
+    </div>
+
+    <!-- XOC DIA -->
+    <div class="game-view" id="view-xocdia">
+      <div class="game-panel">
+        <div class="game-header">
+          <div class="game-title">XÓC ĐĨA</div>
+          <div class="timer-box"><div class="timer-label">Còn</div><div class="timer" id="xdTimer">30s</div></div>
+        </div>
+        <div class="coin-area">
+          <div class="coin white" id="xdC1">?</div><div class="coin white" id="xdC2">?</div>
+          <div class="coin white" id="xdC3">?</div><div class="coin white" id="xdC4">?</div>
+        </div>
+        <div class="result-line" id="xdResult">Chọn Chẵn hoặc Lẻ</div>
+        <div class="bet-board">
+          <div class="bet-cell chan" data-bet="chan" onclick="xdSelect(this,'chan')"><div class="label">CHẴN</div><div class="odds">1:0.95</div></div>
+          <div class="bet-cell le" data-bet="le" onclick="xdSelect(this,'le')"><div class="label">LẺ</div><div class="odds">1:0.95</div></div>
+        </div>
+        <div class="bet-controls">
+          <div class="chip" onclick="setBet('xd',10000)">10K</div>
+          <div class="chip" onclick="setBet('xd',50000)">50K</div>
+          <div class="chip" onclick="setBet('xd',100000)">100K</div>
+          <input type="number" class="bet-input" id="xdBetAmount" value="10000" min="1000" step="1000">
+          <button class="btn-primary" id="xdBtnConfirm" onclick="xdPlaceBet()" disabled>XÁC NHẬN CƯỢC</button>
+        </div>
+      </div>
+      <div class="history-panel">
+        <div class="panel-title"><span>Cầu Xóc Đĩa</span><span id="xdCauStats" style="color:var(--gold);"></span></div>
+        <div class="cau-row" id="xdCauRow"><span style="color:#64748b;font-size:13px;">Chưa có ván nào</span></div>
+      </div>
+    </div>
+
+    <!-- BACCARAT -->
+    <div class="game-view" id="view-baccarat">
+      <div class="game-panel">
+        <div class="game-header">
+          <div class="game-title">BACCARAT</div>
+          <div class="timer-box"><div class="timer-label">Còn</div><div class="timer" id="bacTimer">30s</div></div>
+        </div>
+        <div class="bac-table">
+          <div class="bac-side">
+            <h3>PLAYER</h3>
+            <div class="bac-cards" id="bacPlayerCards"></div>
+            <div class="bac-score" id="bacPlayerScore">-</div>
+          </div>
+          <div class="bac-side">
+            <h3>BANKER</h3>
+            <div class="bac-cards" id="bacBankerCards"></div>
+            <div class="bac-score" id="bacBankerScore">-</div>
+          </div>
+        </div>
+        <div class="result-line" id="bacResult">Chọn Player, Banker hoặc Tie</div>
+        <div class="bac-bet-board">
+          <div class="bet-cell player" data-bet="player" onclick="bacSelect(this,'player')"><div class="label">PLAYER</div><div class="odds">1:1</div></div>
+          <div class="bet-cell banker" data-bet="banker" onclick="bacSelect(this,'banker')"><div class="label">BANKER</div><div class="odds">1:0.95</div></div>
+          <div class="bet-cell tie" data-bet="tie" onclick="bacSelect(this,'tie')"><div class="label">TIE</div><div class="odds">1:8</div></div>
+        </div>
+        <div class="bet-controls">
+          <div class="chip" onclick="setBet('bac',10000)">10K</div>
+          <div class="chip" onclick="setBet('bac',50000)">50K</div>
+          <div class="chip" onclick="setBet('bac',100000)">100K</div>
+          <input type="number" class="bet-input" id="bacBetAmount" value="10000" min="1000" step="1000">
+          <button class="btn-primary" id="bacBtnConfirm" onclick="bacPlaceBet()" disabled>XÁC NHẬN CƯỢC</button>
+        </div>
+      </div>
+      <div class="history-panel">
+        <div class="panel-title"><span>Cầu Baccarat</span><span id="bacCauStats" style="color:var(--gold);"></span></div>
+        <div class="cau-row" id="bacCauRow"><span style="color:#64748b;font-size:13px;">Chưa có ván nào</span></div>
+      </div>
+    </div>
+
+    <!-- SLOT -->
+    <div class="game-view" id="view-slot">
+      <div class="game-panel">
+        <div class="game-title" style="text-align:center;margin-bottom:18px;font-size:20px;">🎰 SLOT MACHINE</div>
+        <div class="slot-machine">
+          <div class="reels">
+            <div class="reel" id="slotR1">🍒</div>
+            <div class="reel" id="slotR2">🍒</div>
+            <div class="reel" id="slotR3">🍒</div>
+          </div>
+          <div class="result-line" id="slotResult">Bấm QUAY</div>
+          <div class="bet-controls" style="justify-content:center;">
+            <div class="chip" onclick="setBet('slot',10000)">10K</div>
+            <div class="chip" onclick="setBet('slot',50000)">50K</div>
+            <div class="chip" onclick="setBet('slot',100000)">100K</div>
+          </div>
+          <div class="bet-controls" style="justify-content:center;margin-top:12px;">
+            <input type="number" class="bet-input" id="slotBetAmount" value="10000" min="1000" step="1000" style="max-width:160px;">
+            <button class="btn-primary" id="slotBtnSpin" onclick="slotSpin()">QUAY</button>
+          </div>
+        </div>
+        <div class="slot-paytable">
+          <span>🍒 x10</span><span>🍋 x15</span><span>🍇 x20</span><br>
+          <span>⭐ x50</span><span>💎 x100</span><span>7️⃣ x200</span> | 2 giống x2
+        </div>
+      </div>
+    </div>
+
+    <!-- SPORTS -->
+    <div class="game-view" id="view-sports">
+      <div class="game-panel">
+        <div class="game-title" style="margin-bottom:18px;">⚽ CÁ CƯỢC THỂ THAO</div>
+        <div class="match-list" id="matchList"></div>
+        <div class="bet-controls">
+          <div class="chip" onclick="setBet('sport',10000)">10K</div>
+          <div class="chip" onclick="setBet('sport',50000)">50K</div>
+          <div class="chip" onclick="setBet('sport',100000)">100K</div>
+          <input type="number" class="bet-input" id="sportBetAmount" value="10000" min="1000" step="1000">
+          <button class="btn-primary" id="sportBtnConfirm" onclick="sportPlaceBet()" disabled>XÁC NHẬN CƯỢC</button>
+        </div>
+        <div class="result-line" id="sportResult"></div>
+      </div>
+    </div>
+
+    <!-- LOTTERY -->
+    <div class="game-view" id="view-lottery">
+      <div class="game-panel">
+        <div class="game-title" style="margin-bottom:12px;">🎲 LÔ ĐỀ</div>
+        <div style="color:#94a3b8;font-size:13px;margin-bottom:15px;">Chọn 1 số 00-99. Tỷ lệ 1:70.</div>
+        <div class="lottery-grid" id="lotteryGrid"></div>
+        <div class="result-line" id="lotteryResult">Chưa chọn số</div>
+        <div class="bet-controls">
+          <div class="chip" onclick="setBet('lot',10000)">10K</div>
+          <div class="chip" onclick="setBet('lot',50000)">50K</div>
+          <div class="chip" onclick="setBet('lot',100000)">100K</div>
+          <input type="number" class="bet-input" id="lotBetAmount" value="10000" min="1000" step="1000">
+          <button class="btn-primary" id="lotBtnConfirm" onclick="lotteryPlaceBet()" disabled>ĐẶT CƯỢC</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div class="game-view" id="view-leaderboard">
+      <div class="game-panel">
+        <div class="game-title" style="margin-bottom:18px;">🏆 BẢNG XẾP HẠNG</div>
+        <div style="color:#94a3b8;font-size:12px;margin-bottom:12px;">Top người chơi có lợi nhuận cao nhất hôm nay</div>
+        <div class="leaderboard-list" id="leaderboardList"></div>
+      </div>
+    </div>
+
+    <!-- QUEST -->
+    <div class="game-view" id="view-quest">
+      <div class="game-panel">
+        <div class="game-title" style="margin-bottom:12px;">📋 NHIỆM VỤ NGÀY</div>
+        <div style="color:#94a3b8;font-size:12px;margin-bottom:15px;">Reset sau 24h. Hoàn thành để nhận thưởng.</div>
+        <div class="quest-list" id="questList"></div>
+      </div>
+    </div>
+
+    <!-- VIP -->
+    <div class="game-view" id="view-vip">
+      <div class="game-panel">
+        <div class="game-title" style="margin-bottom:18px;">👑 VIP CLUB</div>
+        <div class="vip-card" id="vipCard">
+          <div class="vip-tier-icon" id="vipIcon">🥉</div>
+          <div class="vip-tier-name" id="vipName">BRONZE</div>
+          <div class="vip-info">Số dư: <b id="vipBalance" style="color:var(--gold)">1,000,000</b></div>
+          <div class="vip-progress-bar"><div class="vip-progress-fill" id="vipProgress" style="width:0%"></div></div>
+          <div class="vip-info" id="vipNextTier"></div>
+          <div class="vip-benefits" id="vipBenefits"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="history-panel">
+      <div class="panel-title">📊 THỐNG KÊ TỔNG</div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="label">Tổng ván</div><div class="value" id="statRounds">0</div></div>
+        <div class="stat-card"><div class="label">Thắng</div><div class="value" id="statWins">0</div></div>
+        <div class="stat-card"><div class="label">Thua</div><div class="value" id="statLosses">0</div></div>
+        <div class="stat-card"><div class="label">Tỷ lệ</div><div class="value" id="statRate">0%</div></div>
+        <div class="stat-card"><div class="label">Streak</div><div class="value" id="statStreak">0</div></div>
+        <div class="stat-card"><div class="label">Lãi/Lỗ</div><div class="value" id="statPnl">0</div></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<button class="chat-btn" onclick="showModal('Hỗ trợ trực tuyến','Đây là bản demo. Không có hỗ trợ thật.')">💬</button>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3 id="modalTitle">Thông báo</h3>
+    <p id="modalBody"></p>
+    <button class="close-btn" onclick="closeModal()">ĐÃ HIỂU</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="celebration" id="celebration"></div>
+
+<script>
+/* ==================================================
+   SOUND ENGINE — per-game variants
+================================================== */
+const Sound = {
+  ctx: null, bgmTimer: null, bgmPlaying: false,
+  init() {
+    if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+  },
+  tone(freq, duration = 0.1, type = 'sine', gain = 0.15, when = 0) {
+    try {
+      this.init();
+      const t = this.ctx.currentTime + when;
+      const osc = this.ctx.createOscillator();
+      const g = this.ctx.createGain();
+      osc.type = type; osc.frequency.value = freq;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(gain, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.001, t + duration);
+      osc.connect(g); g.connect(this.ctx.destination);
+      osc.start(t); osc.stop(t + duration);
+    } catch(e) {}
+  },
+  click() { this.tone(800, 0.05, 'square', 0.08); },
+  chip() { this.tone(1200, 0.08, 'triangle', 0.12); },
+  dice() { for (let i=0;i<6;i++) setTimeout(() => this.tone(200+Math.random()*300, 0.06, 'square', 0.06), i*100); },
+  card() { this.tone(500, 0.08, 'sawtooth', 0.1); },
+  spin() { this.tone(300, 0.05, 'square', 0.05); },
+
+  // Per-game win
+  winTaiXiu() { [523,659,784,1047].forEach((f,i) => setTimeout(() => this.tone(f,0.2,'sine',0.15), i*100)); },
+  winBaccarat() { [440,554,659,880].forEach((f,i) => setTimeout(() => this.tone(f,0.25,'triangle',0.14), i*110)); },
+  winSlot() { [659,784,988,1319,1568].forEach((f,i) => setTimeout(() => this.tone(f,0.2,'square',0.13), i*80)); },
+  winBlackjack() { [523,659,784,1047,1319].forEach((f,i) => setTimeout(() => this.tone(f,0.22,'sine',0.15), i*90)); },
+  winSports() { [392,523,659,784].forEach((f,i) => setTimeout(() => this.tone(f,0.3,'triangle',0.14), i*130)); },
+  winDragon() { [330,415,494,659,830].forEach((f,i) => setTimeout(() => this.tone(f,0.22,'sine',0.15), i*100)); },
+  winBauCua() { [523,587,659,784].forEach((f,i) => setTimeout(() => this.tone(f,0.2,'triangle',0.14), i*100)); },
+
+  lose() { [400,350,300].forEach((f,i) => setTimeout(() => this.tone(f,0.2,'sawtooth',0.1), i*100)); },
+  jackpot() { [523,659,784,1047,1319,1568,2093].forEach((f,i) => setTimeout(() => this.tone(f,0.25,'sine',0.18), i*100)); },
+  streak() { [880,1109,1319,1760].forEach((f,i) => setTimeout(() => this.tone(f,0.15,'square',0.12), i*80)); },
+  quest() { [659,784,1047,1319].forEach((f,i) => setTimeout(() => this.tone(f,0.15,'triangle',0.12), i*80)); },
+
+  startBGM() {
+    this.init();
+    if (this.bgmPlaying) return;
+    this.bgmPlaying = true;
+    const chords = [
+      { bass:110, notes:[220,261.63,329.63] },
+      { bass:87.31, notes:[174.61,220,261.63] },
+      { bass:130.81, notes:[261.63,329.63,392] },
+      { bass:98, notes:[196,246.94,293.66] },
+      { bass:146.83, notes:[293.66,369.99,440] },
+    ];
+    let i = 0;
+    const play = () => {
+      if (!this.bgmPlaying) return;
+      const c = chords[i];
+      this.tone(c.bass, 2.8, 'sine', 0.08);
+      c.notes.forEach((f, k) => {
+        this.tone(f, 0.8, 'sine', 0.05, k * 0.4);
+        this.tone(f * 2, 0.6, 'triangle', 0.03, k * 0.4 + 0.2);
+      });
+      this.tone(c.bass * 2, 2.5, 'triangle', 0.02, 0.5);
+      i = (i + 1) % chords.length;
+    };
+    play();
+    this.bgmTimer = setInterval(play, 3000);
+  },
+  stopBGM() {
+    this.bgmPlaying = false;
+    if (this.bgmTimer) { clearInterval(this.bgmTimer); this.bgmTimer = null; }
+  }
+};
+
+function toggleBGM() {
+  if (Sound.bgmPlaying) {
+    Sound.stopBGM();
+    $('bgmDot').style.display = 'none';
+    showToast('🔇 Nhạc nền: TẮT');
+  } else {
+    Sound.startBGM();
+    $('bgmDot').style.display = 'inline-block';
+    showToast('🎵 Nhạc nền: BẬT');
+  }
+}
+
+/* ==================================================
+   CONFETTI
+================================================== */
+function celebrate(big = false) {
+  const c = $('celebration');
+  c.classList.add('show');
+  const colors = ['#fbbf24','#ef4444','#3b82f6','#4ade80','#a78bfa','#f472b6','#22d3ee'];
+  const count = big ? 100 : 35;
+  for (let i = 0; i < count; i++) {
+    const d = document.createElement('div');
+    d.className = 'confetti';
+    d.style.left = Math.random() * 100 + '%';
+    d.style.background = colors[rnd(colors.length)];
+    d.style.animationDuration = (2 + Math.random() * 2) + 's';
+    d.style.animationDelay = Math.random() * 0.5 + 's';
+    if (Math.random() > 0.5) d.style.borderRadius = '50%';
+    c.appendChild(d);
+  }
+  setTimeout(() => { c.innerHTML = ''; c.classList.remove('show'); }, 4000);
+}
+
+/* ==================================================
+   STATE
+================================================== */
+let balance = 1000000;
+const initialBalance = 1000000;
+let stats = { rounds: 0, wins: 0, losses: 0, currentStreak: 0, maxStreak: 0 };
+
+const $ = id => document.getElementById(id);
+const fmt = n => n.toLocaleString('vi-VN');
+const rnd = n => Math.floor(Math.random() * n);
+
+const GAME_SOUNDS = {
+  taixiu: Sound.winTaiXiu, sicbo: Sound.winTaiXiu, dragon: Sound.winDragon,
+  baucua: Sound.winBauCua, blackjack: Sound.winBlackjack, xocdia: Sound.winTaiXiu,
+  baccarat: Sound.winBaccarat, slot: Sound.winSlot, sports: Sound.winSports, lottery: Sound.winSlot
+};
+
+/* ==================================================
+   VIP
+================================================== */
+const VIP_TIERS = [
+  { name:'BRONZE',   icon:'🥉', cls:'vip-bronze',   min:0,         benefits:{bonus:'0%',cashback:'0%',limit:'10M',support:'Thường'} },
+  { name:'SILVER',   icon:'🥈', cls:'vip-silver',   min:5000000,   benefits:{bonus:'5%',cashback:'0.5%',limit:'50M',support:'Thường'} },
+  { name:'GOLD',     icon:'🥇', cls:'vip-gold',     min:20000000,  benefits:{bonus:'10%',cashback:'1%',limit:'200M',support:'VIP 24/7'} },
+  { name:'PLATINUM', icon:'💎', cls:'vip-platinum', min:100000000, benefits:{bonus:'15%',cashback:'2%',limit:'1B',support:'VIP 24/7'} },
+  { name:'DIAMOND',  icon:'👑', cls:'vip-diamond',  min:500000000, benefits:{bonus:'25%',cashback:'3%',limit:'∞',support:'VIP 24/7'} }
+];
+function getVipIdx(a){ for(let i=VIP_TIERS.length-1;i>=0;i--){ if(a>=VIP_TIERS[i].min) return i; } return 0; }
+function updateVip() {
+  const idx = getVipIdx(balance);
+  const tier = VIP_TIERS[idx];
+  const badge = $('headerVip');
+  badge.className = 'vip-badge ' + tier.cls;
+  badge.textContent = tier.icon + ' ' + tier.name;
+  const color = getComputedStyle(badge).color;
+  $('vipIcon').textContent = tier.icon;
+  $('vipIcon').style.color = color;
+  $('vipName').textContent = tier.name;
+  $('vipName').style.color = color;
+  $('vipBalance').textContent = fmt(balance);
+  if (idx < VIP_TIERS.length - 1) {
+    const next = VIP_TIERS[idx + 1];
+    const pct = ((balance - tier.min) / (next.min - tier.min)) * 100;
+    $('vipProgress').style.width = Math.min(100, pct) + '%';
+    $('vipNextTier').textContent = `Cần ${fmt(next.min - balance)} nữa để lên ${next.icon} ${next.name}`;
+  } else {
+    $('vipProgress').style.width = '100%';
+    $('vipNextTier').textContent = '👑 Bậc cao nhất!';
+  }
+  $('vipBenefits').innerHTML = `
+    <div class="vip-benefit"><b>BONUS NẠP</b>+${tier.benefits.bonus}</div>
+    <div class="vip-benefit"><b>CASHBACK</b>${tier.benefits.cashback}</div>
+    <div class="vip-benefit"><b>HẠN MỨC</b>${tier.benefits.limit}</div>
+    <div class="vip-benefit"><b>HỖ TRỢ</b>${tier.benefits.support}</div>
+  `;
+}
+
+/* ==================================================
+   QUESTS
+================================================== */
+const QUESTS_DEF = [
+  { id:'q1', name:'Chơi 10 ván', icon:'🎲', target:10, reward:50000, type:'rounds' },
+  { id:'q2', name:'Thắng 5 ván', icon:'🏆', target:5, reward:100000, type:'wins' },
+  { id:'q3', name:'Cược tổng 1 triệu', icon:'💰', target:1000000, reward:150000, type:'wagered' },
+  { id:'q4', name:'Streak 3 ván', icon:'🔥', target:3, reward:200000, type:'streak' },
+  { id:'q5', name:'Chơi 5 game', icon:'🎮', target:5, reward:120000, type:'games' }
+];
+let quests = { rounds:0, wins:0, wagered:0, streak:0, maxStreak:0, gamesPlayed:new Set(), claimed:{}, lastReset:Date.now() };
+
+function saveQuests() {
+  try { localStorage.setItem('royalQuests', JSON.stringify({ ...quests, gamesPlayed: Array.from(quests.gamesPlayed) })); } catch(e){}
+}
+function loadQuests() {
+  try {
+    const s = JSON.parse(localStorage.getItem('royalQuests') || 'null');
+    if (s && Date.now() - s.lastReset < 86400000) {
+      quests = { ...quests, ...s, gamesPlayed: new Set(s.gamesPlayed || []) };
+    }
+  } catch(e){}
+  renderQuests();
+}
+function questProgress(type) {
+  return { rounds:quests.rounds, wins:quests.wins, wagered:quests.wagered, streak:quests.maxStreak, games:quests.gamesPlayed.size }[type] || 0;
+}
+function renderQuests() {
+  let claimable = 0;
+  $('questList').innerHTML = QUESTS_DEF.map(q => {
+    const p = questProgress(q.type);
+    const pct = Math.min(100, (p / q.target) * 100);
+    const done = p >= q.target;
+    const claimed = quests.claimed[q.id];
+    if (done && !claimed) claimable++;
+    return `
+      <div class="quest-item ${done?'done':''}">
+        <div class="quest-icon">${q.icon}</div>
+        <div class="quest-info">
+          <div class="quest-name">${q.name}</div>
+          <div class="quest-progress-text">${p.toLocaleString('vi-VN')} / ${q.target.toLocaleString('vi-VN')}</div>
+          <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:${pct}%"></div></div>
+        </div>
+        <div class="quest-reward">
+          +${fmt(q.reward)}
+          ${done && !claimed ? `<button class="quest-claim" onclick="claimQuest('${q.id}',${q.reward})">NHẬN</button>` : ''}
+          ${claimed ? '<div style="color:#4ade80;font-size:11px;margin-top:6px;font-weight:800;">✓ ĐÃ NHẬN</div>' : ''}
+        </div>
+      </div>`;
+  }).join('');
+  const badge = $('questBadge');
+  badge.textContent = claimable;
+  badge.style.display = claimable > 0 ? 'inline-block' : 'none';
+}
+function claimQuest(id, reward) {
+  if (quests.claimed[id]) return;
+  quests.claimed[id] = true;
+  balance += reward;
+  updateBalance();
+  saveQuests();
+  renderQuests();
+  Sound.quest(); celebrate(false);
+  showToast(`🎁 +${fmt(reward)} từ nhiệm vụ!`, 'quest');
+  addLeaderboardEntry('BẠN (từ quest)', reward);
+}
+function trackQuest(type, value = 1) {
+  if (type === 'round') { quests.rounds++; quests.gamesPlayed.add(currentGame); }
+  else if (type === 'win') { quests.wins++; quests.streak++; if (quests.streak > quests.maxStreak) quests.maxStreak = quests.streak; }
+  else if (type === 'loss') { quests.streak = 0; }
+  else if (type === 'wagered') { quests.wagered += value; }
+  saveQuests(); renderQuests();
+}
+
+/* ==================================================
+   LEADERBOARD
+================================================== */
+const BOT_NAMES = [
+  { name:'AlexNguyen', avatar:'🦁' }, { name:'MinhTuan88', avatar:'🐯' },
+  { name:'GoldenKing', avatar:'👑' }, { name:'LuckyStarVN', avatar:'⭐' },
+  { name:'DragonLord', avatar:'🐉' }, { name:'PhoenixRise', avatar:'🔥' },
+  { name:'TuanKietPro', avatar:'🐺' }, { name:'MegaWinner', avatar:'💎' },
+  { name:'NguyenVanA', avatar:'🎯' }, { name:'SaigonBoy', avatar:'🌆' },
+  { name:'HanoiKing', avatar:'🏰' }, { name:'DaNangHero', avatar:'⚡' }
+];
+let leaderboard = [];
+
+function initLeaderboard() {
+  leaderboard = BOT_NAMES.map(b => ({
+    name: b.name, avatar: b.avatar,
+    pnl: Math.floor((Math.random() - 0.35) * 3000000)
+  }));
+  // User entry
+  leaderboard.push({ name:'BẠN', avatar:'🫵', pnl: 0, isMe: true });
+  renderLeaderboard();
+}
+function addLeaderboardEntry(name, amount) {
+  const me = leaderboard.find(x => x.isMe);
+  if (me) me.pnl += amount;
+  renderLeaderboard();
+}
+function renderLeaderboard() {
+  const sorted = [...leaderboard].sort((a,b) => b.pnl - a.pnl);
+  $('leaderboardList').innerHTML = sorted.map((p, i) => {
+    const rank = i + 1;
+    const rankIcon = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
+    const cls = rank === 1 ? 'top-1' : rank === 2 ? 'top-2' : rank === 3 ? 'top-3' : '';
+    const meCls = p.isMe ? 'me' : '';
+    return `
+      <div class="lb-item ${cls} ${meCls}">
+        <div class="lb-rank">${rankIcon}</div>
+        <div class="lb-avatar">${p.avatar}</div>
+        <div class="lb-name">${p.name}${p.isMe ? ' ⬅' : ''}</div>
+        <div class="lb-pnl ${p.pnl >= 0 ? 'win' : 'lose'}">${p.pnl >= 0 ? '+' : ''}${fmt(p.pnl)}</div>
+      </div>`;
+  }).join('');
+}
+
+/* ==================================================
+   BALANCE / STATS / RESULT
+================================================== */
+function updateBalance() {
+  $('headerBalance').textContent = fmt(balance);
+  const pnl = balance - initialBalance;
+  const el = $('statPnl');
+  el.textContent = (pnl >= 0 ? '+' : '') + fmt(pnl);
+  el.style.color = pnl >= 0 ? '#4ade80' : '#f87171';
+  $('statStreak').textContent = stats.currentStreak;
+  updateVip();
+}
+function updateStats() {
+  $('statRounds').textContent = stats.rounds;
+  $('statWins').textContent = stats.wins;
+  $('statLosses').textContent = stats.losses;
+  $('statRate').textContent = stats.rounds ? ((stats.wins / stats.rounds) * 100).toFixed(1) + '%' : '0%';
+  $('statStreak').textContent = stats.currentStreak;
+}
+function recordResult(win, amountWon, amountBet) {
+  stats.rounds++;
+  trackQuest('round');
+  trackQuest('wagered', amountBet);
+  addLeaderboardEntry('BẠN', win ? (amountWon - amountBet) : -amountBet);
+
+  const playWinSound = GAME_SOUNDS[currentGame] || Sound.winTaiXiu;
+
+  if (win) {
+    stats.wins++;
+    stats.currentStreak++;
+    if (stats.currentStreak > stats.maxStreak) stats.maxStreak = stats.currentStreak;
+    balance += amountWon;
+    trackQuest('win');
+    const profit = amountWon - amountBet;
+    showToast(`🎉 Thắng +${fmt(profit)}`, 'win');
+    if (stats.currentStreak >= 3) {
+      setTimeout(() => {
+        Sound.streak();
+        showToast(`🔥 STREAK ${stats.currentStreak} VÁN THẮNG!`, 'streak');
+      }, 800);
+    }
+    if (profit > 500000) { Sound.jackpot(); celebrate(true); }
+    else { playWinSound.call(Sound); celebrate(false); }
+  } else {
+    stats.losses++;
+    stats.currentStreak = 0;
+    trackQuest('loss');
+    showToast(`😢 Thua -${fmt(amountBet)}`, 'lose');
+    Sound.lose();
+  }
+  updateBalance();
+  updateStats();
+}
+function showToast(msg, type = '') {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.className = 'toast ' + type, 2200);
+}
+function showModal(title, body) {
+  $('modalTitle').textContent = title;
+  $('modalBody').textContent = body || 'Đây là bản demo mô phỏng. Không có tiền thật.';
+  $('modalBg').classList.add('show');
+}
+function closeModal() { $('modalBg').classList.remove('show'); }
+
+function setBet(g, v) {
+  const m = { tx:'txBetAmount', sb:'sbBetAmount', dt:'dtBetAmount', bc:'bcBetAmount', bj:'bjBetAmount', xd:'xdBetAmount', bac:'bacBetAmount', slot:'slotBetAmount', sport:'sportBetAmount', lot:'lotBetAmount' };
+  const el = $(m[g]); if (el) { el.value = v; Sound.chip(); }
+}
+function getBet(g) {
+  const m = { tx:'txBetAmount', sb:'sbBetAmount', dt:'dtBetAmount', bc:'bcBetAmount', bj:'bjBetAmount', xd:'xdBetAmount', bac:'bacBetAmount', slot:'slotBetAmount', sport:'sportBetAmount', lot:'lotBetAmount' };
+  return parseInt($(m[g]).value) || 0;
+}
+function checkBet(a) {
+  if (a < 1000) { showToast('Cược tối thiểu 1,000', 'lose'); return false; }
+  if (a > balance) { showToast('Số dư không đủ', 'lose'); return false; }
+  return true;
+}
+
+/* ==================================================
+   NAV
+================================================== */
+let currentGame = 'taixiu';
+function navTo(g) {
+  currentGame = g;
+  document.querySelectorAll('.menu-item').forEach(x => x.classList.remove('active'));
+  const el = document.querySelector(`.menu-item[data-game="${g}"]`);
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.game-view').forEach(x => x.classList.remove('active'));
+  $('view-' + g).classList.add('active');
+}
+document.querySelectorAll('.menu-item[data-game]').forEach(el => {
+  el.addEventListener('click', () => { Sound.click(); navTo(el.dataset.game); });
+});
+
+/* ==================================================
+   TAI XIU
+================================================== */
+const TX = { selected:null, phase:'betting', countdown:30, timer:null, cau:[] };
+function txStartTimer() {
+  TX.countdown = 30; TX.phase = 'betting'; TX.selected = null;
+  document.querySelectorAll('#txBetBoard .bet-cell').forEach(x => x.classList.remove('selected'));
+  $('txResult').textContent = 'Chọn cửa cược và đặt tiền';
+  $('txResult').className = 'result-line';
+  $('txBtnConfirm').disabled = true; $('txBtnConfirm').textContent = 'XÁC NHẬN CƯỢC';
+  document.querySelectorAll('#view-taixiu .die').forEach(d => { d.textContent = '?'; d.classList.remove('tai','xiu','rolling','triple'); });
+  txUpdateTimer();
+  clearInterval(TX.timer);
+  TX.timer = setInterval(() => {
+    TX.countdown--; txUpdateTimer();
+    if (TX.countdown <= 0) { clearInterval(TX.timer); if (TX.selected) txRoll(); else txStartTimer(); }
+  }, 1000);
+}
+function txUpdateTimer() {
+  const el = $('txTimer');
+  el.textContent = TX.countdown + 's';
+  el.className = 'timer' + (TX.countdown <= 5 ? ' urgent' : '');
+}
+document.querySelectorAll('#txBetBoard .bet-cell').forEach(el => {
+  el.addEventListener('click', () => {
+    if (TX.phase !== 'betting') return;
+    Sound.click();
+    document.querySelectorAll('#txBetBoard .bet-cell').forEach(x => x.classList.remove('selected'));
+    el.classList.add('selected'); TX.selected = el.dataset.bet;
+    $('txBtnConfirm').disabled = false;
+  });
+});
+function txPlaceBet() {
+  if (!TX.selected) return;
+  const a = getBet('tx'); if (!checkBet(a)) return;
+  balance -= a; updateBalance(); Sound.chip();
+  $('txBtnConfirm').disabled = true; $('txBtnConfirm').textContent = 'ĐÃ ĐẶT CƯỢC';
+  showToast(`Đã đặt ${fmt(a)} vào ${TX.selected.toUpperCase()}`);
+}
+async function txRoll() {
+  if (TX.phase === 'rolling') return;
+  TX.phase = 'rolling'; clearInterval(TX.timer);
+  $('txTimer').textContent = 'LẮC...'; $('txTimer').className = 'timer waiting';
+  Sound.dice();
+  const dice = [$('txD1'), $('txD2'), $('txD3')];
+  dice.forEach(d => d.classList.add('rolling'));
+  const int = setInterval(() => dice.forEach(d => d.textContent = rnd(6)+1), 80);
+  await new Promise(r => setTimeout(r, 1400));
+  clearInterval(int);
+  const v = [rnd(6)+1, rnd(6)+1, rnd(6)+1];
+  dice.forEach((d,i) => { d.textContent = v[i]; d.classList.remove('rolling'); });
+  txSettle(v);
+}
+function txSettle([a,b,c]) {
+  const t = a+b+c, isTrip = a===b && b===c, amt = getBet('tx');
+  let win = false, payout = 0, text = '', cls = 'result-line';
+  if (isTrip) {
+    text = `BỘ BA ${a}-${b}-${c} — NHÀ CÁI THẮNG`;
+    cls += ' triple';
+    if (TX.selected === 'triple') { win = true; payout = amt*31; }
+    document.querySelectorAll('#view-taixiu .die').forEach(d => d.classList.add('triple'));
+    TX.cau.push('triple');
+  } else {
+    const isTai = t >= 11;
+    text = `${isTai?'🔴 TÀI':'🔵 XỈU'} - TỔNG ${t}`;
+    cls += isTai ? ' tai' : ' xiu';
+    document.querySelectorAll('#view-taixiu .die').forEach(d => d.classList.add(isTai?'tai':'xiu'));
+    if (TX.selected==='tai' && isTai) { win = true; payout = amt*2; }
+    else if (TX.selected==='xiu' && !isTai) { win = true; payout = amt*2; }
+    else if (TX.selected==='chan' && t%2===0) { win = true; payout = amt*2; }
+    else if (TX.selected==='le' && t%2===1) { win = true; payout = amt*2; }
+    else if (TX.selected==='total' && t>=4 && t<=17) { win = true; payout = amt*7; }
+    TX.cau.push(isTai?'tai':'xiu');
+  }
+  $('txResult').textContent = text;
+  $('txResult').className = cls + (win ? ' big-win' : '');
+  recordResult(win, payout, amt);
+  const row = $('txCauRow'), recent = TX.cau.slice(-20);
+  row.innerHTML = recent.map(x => `<div class="cau-dot ${x}">${x==='tai'?'T':x==='xiu'?'X':'3'}</div>`).join('');
+  const tc = TX.cau.filter(x=>x==='tai').length, xc = TX.cau.filter(x=>x==='xiu').length;
+  $('txCauStats').textContent = `T: ${tc} - X: ${xc}`;
+  setTimeout(txStartTimer, 2500);
+}
+txStartTimer();
+
+/* ==================================================
+   SICBO
+================================================== */
+const SB = { selected:null, phase:'betting', countdown:30, timer:null };
+function sbStartTimer() {
+  SB.countdown = 30; SB.phase = 'betting'; SB.selected = null;
+  document.querySelectorAll('#sbBetBoard .sicbo-cell').forEach(x => x.classList.remove('selected'));
+  $('sbResult').textContent = 'Chọn 1 cửa cược';
+  $('sbResult').className = 'result-line';
+  $('sbBtnConfirm').disabled = true; $('sbBtnConfirm').textContent = 'XÁC NHẬN CƯỢC';
+  document.querySelectorAll('#view-sicbo .die').forEach(d => { d.textContent = '?'; d.classList.remove('tai','xiu','rolling','triple'); });
+  sbUpdateTimer();
+  clearInterval(SB.timer);
+  SB.timer = setInterval(() => {
+    SB.countdown--; sbUpdateTimer();
+    if (SB.countdown <= 0) { clearInterval(SB.timer); if (SB.selected) sbRoll(); else sbStartTimer(); }
+  }, 1000);
+}
+function sbUpdateTimer() {
+  const el = $('sbTimer');
+  el.textContent = SB.countdown + 's';
+  el.className = 'timer' + (SB.countdown <= 5 ? ' urgent' : '');
+}
+document.querySelectorAll('#sbBetBoard .sicbo-cell').forEach(el => {
+  el.addEventListener('click', () => {
+    if (SB.phase !== 'betting') return;
+    Sound.click();
+    document.querySelectorAll('#sbBetBoard .sicbo-cell').forEach(x => x.classList.remove('selected'));
+    el.classList.add('selected'); SB.selected = el.dataset.bet;
+    $('sbBtnConfirm').disabled = false;
+  });
+});
+function sbPlaceBet() {
+  if (!SB.selected) return;
+  const a = getBet('sb'); if (!checkBet(a)) return;
+  balance -= a; updateBalance(); Sound.chip();
+  $('sbBtnConfirm').disabled = true; $('sbBtnConfirm').textContent = 'ĐÃ ĐẶT CƯỢC';
+  showToast(`Đã đặt ${fmt(a)}`);
+}
+async function sbRoll() {
+  if (SB.phase === 'rolling') return;
+  SB.phase = 'rolling'; clearInterval(SB.timer);
+  $('sbTimer').textContent = 'LẮC...'; $('sbTimer').className = 'timer waiting';
+  Sound.dice();
+  const dice = [$('sbD1'), $('sbD2'), $('sbD3')];
+  dice.forEach(d => d.classList.add('rolling'));
+  const int = setInterval(() => dice.forEach(d => d.textContent = rnd(6)+1), 80);
+  await new Promise(r => setTimeout(r, 1400));
+  clearInterval(int);
+  const v = [rnd(6)+1, rnd(6)+1, rnd(6)+1];
+  dice.forEach((d,i) => { d.textContent = v[i]; d.classList.remove('rolling'); });
+  const t = v[0]+v[1]+v[2], isTrip = v[0]===v[1] && v[1]===v[2], amt = getBet('sb');
+  let win = false, payout = 0;
+  const payouts = { 4:60,5:30,6:17,7:12,8:8,9:6,10:6,11:6,12:6,13:8,14:12,15:17,16:30,17:60 };
+  if (SB.selected==='small' && t>=4 && t<=10 && !isTrip) { win = true; payout = amt*2; }
+  else if (SB.selected==='big' && t>=11 && t<=17 && !isTrip) { win = true; payout = amt*2; }
+  else if (SB.selected==='odd' && t%2===1 && !isTrip) { win = true; payout = amt*2; }
+  else if (SB.selected==='even' && t%2===0 && !isTrip) { win = true; payout = amt*2; }
+  else if (SB.selected==='triple' && isTrip) { win = true; payout = amt*31; }
+  else if (SB.selected && SB.selected.startsWith('t')) {
+    const target = parseInt(SB.selected.substring(1));
+    if (t === target && !isTrip) { win = true; payout = amt * (payouts[target] + 1); }
+  }
+  const color = t >= 11 ? 'tai' : 'xiu';
+  document.querySelectorAll('#view-sicbo .die').forEach(d => d.classList.add(isTrip ? 'triple' : color));
+  let text = `TỔNG ${t}` + (isTrip ? ' — BỘ BA!' : '');
+  $('sbResult').textContent = text;
+  $('sbResult').className = 'result-line ' + (isTrip ? 'triple' : color) + (win ? ' big-win' : '');
+  recordResult(win, payout, amt);
+  setTimeout(sbStartTimer, 2500);
+}
+sbStartTimer();
+
+/* ==================================================
+   DRAGON TIGER
+================================================== */
+const DT = { selected:null, phase:'betting', countdown:30, timer:null, cau:[] };
+function dtStartTimer() {
+  DT.countdown = 30; DT.phase = 'betting'; DT.selected = null;
+  document.querySelectorAll('#view-dragon .bet-cell').forEach(x => x.classList.remove('selected'));
+  $('dtResult').textContent = 'Chọn Rồng, Hổ hoặc Hòa';
+  $('dtResult').className = 'result-line';
+  $('dtBtnConfirm').disabled = true; $('dtBtnConfirm').textContent = 'XÁC NHẬN CƯỢC';
+  $('dtDragonCards').innerHTML = ''; $('dtTigerCards').innerHTML = '';
+  $('dtDragonScore').textContent = '-'; $('dtTigerScore').textContent = '-';
+  dtUpdateTimer();
+  clearInterval(DT.timer);
+  DT.timer = setInterval(() => {
+    DT.countdown--; dtUpdateTimer();
+    if (DT.countdown <= 0) { clearInterval(DT.timer); if (DT.selected) dtDeal(); else dtStartTimer(); }
+  }, 1000);
+}
+function dtUpdateTimer() {
+  const el = $('dtTimer');
+  el.textContent = DT.countdown + 's';
+  el.className = 'timer' + (DT.countdown <= 5 ? ' urgent' : '');
+}
+function dtSelect(el, bet) {
+  if (DT.phase !== 'betting') return;
+  Sound.click();
+  document.querySelectorAll('#view-dragon .bet-cell').forEach(x => x.classList.remove('selected'));
+  el.classList.add('selected'); DT.selected = bet;
+  $('dtBtnConfirm').disabled = false;
+}
+function dtPlaceBet() {
+  if (!DT.selected) return;
+  const a = getBet('dt'); if (!checkBet(a)) return;
+  balance -= a; updateBalance(); Sound.chip();
+  $('dtBtnConfirm').disabled = true; $('dtBtnConfirm').textContent = 'ĐÃ ĐẶT CƯỢC';
+  showToast(`Đã đặt ${fmt(a)}`);
+}
+function drawDTCard() {
+  const R = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'], S = ['♠','♥','♦','♣'];
+  const r = R[rnd(13)], s = S[rnd(4)];
+  return { r, s, value: r==='A'?1:(['J','Q','K'].includes(r)?10:parseInt(r)), red: s==='♥'||s==='♦' };
+}
+function dtCardHTML(c) {
+  return `<div class="dt-card ${c.red?'red':''}"><div class="rank">${c.r}</div><div class="suit">${c.s}</div></div>`;
+}
+async function dtDeal() {
+  if (DT.phase === 'rolling') return;
+  DT.phase = 'rolling'; clearInterval(DT.timer);
+  $('dtTimer').textContent = 'CHIA...'; $('dtTimer').className = 'timer waiting';
+  const d = drawDTCard(); Sound.card(); $('dtDragonCards').innerHTML = dtCardHTML(d);
+  await new Promise(r => setTimeout(r, 500));
+  const t = drawDTCard(); Sound.card(); $('dtTigerCards').innerHTML = dtCardHTML(t);
+  await new Promise(r => setTimeout(r, 500));
+  $('dtDragonScore').textContent = d.value;
+  $('dtTigerScore').textContent = t.value;
+  const amt = getBet('dt');
+  let win = false, payout = 0, result, cls = 'result-line';
+  if (d.value > t.value) {
+    result = `🐉 RỒNG THẮNG (${d.value} vs ${t.value})`; cls += ' tai';
+    if (DT.selected === 'dragon') { win = true; payout = amt*2; }
+    DT.cau.push('player');
+  } else if (t.value > d.value) {
+    result = `🐯 HỔ THẮNG (${t.value} vs ${d.value})`; cls += ' xiu';
+    if (DT.selected === 'tiger') { win = true; payout = amt*2; }
+    DT.cau.push('banker');
+  } else {
+    result = `🤝 HÒA (${d.value} vs ${t.value})`; cls += ' green';
+    if (DT.selected === 'tie') { win = true; payout = amt*9; }
+    DT.cau.push('tie');
+  }
+  $('dtResult').textContent = result;
+  $('dtResult').className = cls + (win ? ' big-win' : '');
+  recordResult(win, payout, amt);
+  const row = $('dtCauRow'), recent = DT.cau.slice(-20);
+  row.innerHTML = recent.map(x => `<div class="cau-dot ${x}">${x==='player'?'D':x==='banker'?'T':'H'}</div>`).join('');
+  const dc = DT.cau.filter(x=>x==='player').length, tc = DT.cau.filter(x=>x==='banker').length, hc = DT.cau.filter(x=>x==='tie').length;
+  $('dtCauStats').textContent = `R: ${dc} - H: ${tc} - Hòa: ${hc}`;
+  setTimeout(dtStartTimer, 3000);
+}
+dtStartTimer();
+
+/* ==================================================
+   BAU CUA
+================================================== */
+const BC = { selected:null, phase:'betting', countdown:30, timer:null, cau:[] };
+const BC_ITEMS = [
+  { key:'bau', icon:'🍐', name:'BẦU' }, { key:'cua', icon:'🦀', name:'CUA' },
+  { key:'tom', icon:'🦐', name:'TÔM' }, { key:'ca', icon:'🐟', name:'CÁ' },
+  { key:'ga', icon:'🐓', name:'GÀ' }, { key:'nai', icon:'🦌', name:'NAI' }
+];
+function bcStartTimer() {
+  BC.countdown = 30; BC.phase = 'betting'; BC.selected = null;
+  document.querySelectorAll('#bcBetBoard .baucua-cell').forEach(x => x.classList.remove('selected'));
+  $('bcResult').textContent = 'Chọn 1 linh vật để cược';
+  $('bcResult').className = 'result-line';
+  $('bcBtnConfirm').disabled = true; $('bcBtnConfirm').textContent = 'XÁC NHẬN CƯỢC';
+  ['bcD1','bcD2','bcD3'].forEach(id => { $(id).textContent = '?'; $(id).classList.remove('rolling'); });
+  bcUpdateTimer();
+  clearInterval(BC.timer);
+  BC.timer = setInterval(() => {
+    BC.countdown--; bcUpdateTimer();
+    if (BC.countdown <= 0) { clearInterval(BC.timer); if (BC.selected) bcRoll(); else bcStartTimer(); }
+  }, 1000);
+}
+function bcUpdateTimer() {
+  const el = $('bcTimer');
+  el.textContent = BC.countdown + 's';
+  el.className = 'timer' + (BC.countdown <= 5 ? ' urgent' : '');
+}
+document.querySelectorAll('#bcBetBoard .baucua-cell').forEach(el => {
+  el.addEventListener('click', () => {
+    if (BC.phase !== 'betting') return;
+    Sound.click();
+    document.querySelectorAll('#bcBetBoard .baucua-cell').forEach(x => x.classList.remove('selected'));
+    el.classList.add('selected'); BC.selected = el.dataset.bet;
+    $('bcBtnConfirm').disabled = false;
+  });
+});
+function bcPlaceBet() {
+  if (!BC.selected) return;
+  const a = getBet('bc'); if (!checkBet(a)) return;
+  balance -= a; updateBalance(); Sound.chip();
+  $('bcBtnConfirm').disabled = true; $('bcBtnConfirm').textContent = 'ĐÃ ĐẶT CƯỢC';
+  showToast(`Đã đặt ${fmt(a)}`);
+}
+async function bcRoll() {
+  if (BC.phase === 'rolling') return;
+  BC.phase = 'rolling'; clearInterval(BC.timer);
+  $('bcTimer').textContent = 'LẮC...'; $('bcTimer').className = 'timer waiting';
+  Sound.dice();
+  const dies = [$('bcD1'),$('bcD2'),$('bcD3')];
+  dies.forEach(d => d.classList.add('rolling'));
+  const int = setInterval(() => dies.forEach(d => d.textContent = BC_ITEMS[rnd(6)].icon), 100);
+  await new Promise(r => setTimeout(r, 1400));
+  clearInterval(int);
+  const results = [0,0,0].map(() => BC_ITEMS[rnd(6)]);
+  dies.forEach((d,i) => { d.textContent = results[i].icon; d.classList.remove('rolling'); });
+  const matches = results.filter(r => r.key === BC.selected).length;
+  const amt = getBet('bc');
+  const win = matches > 0;
+  const payout = win ? amt * (1 + matches) : 0;
+  const selName = BC_ITEMS.find(x => x.key === BC.selected).name;
+  $('bcResult').textContent = `${matches > 0 ? '🎉' : '❌'} ${selName} xuất hiện ${matches} lần`;
+  $('bcResult').className = 'result-line ' + (win ? 'green' : 'red') + (win ? ' big-win' : '');
+  recordResult(win, payout, amt);
+  BC.cau.push(win ? 'chan' : 'le');
+  const row = $('bcCauRow'), recent = BC.cau.slice(-20);
+  row.innerHTML = recent.map(x => `<div class="cau-dot ${x}">${x==='chan'?'W':'L'}</div>`).join('');
+  const wc = BC.cau.filter(x=>x==='chan').length, lc = BC.cau.filter(x=>x==='le').length;
+  $('bcCauStats').textContent = `W: ${wc} - L: ${lc}`;
+  setTimeout(bcStartTimer, 2800);
+}
+bcStartTimer();
+
+/* ==================================================
+   BLACKJACK
+================================================== */
+const BJ = { player:[], dealer:[], phase:'idle', deck:[], cau:[] };
+function bjNewDeck() {
+  const R = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'], S = ['♠','♥','♦','♣'];
+  const deck = [];
+  for (const r of R) for (const s of S) {
+    const value = r==='A' ? 11 : (['J','Q','K'].includes(r) ? 10 : parseInt(r));
+    deck.push({ r, s, value, red: s==='♥'||s==='♦' });
+  }
+  return deck.sort(() => Math.random() - 0.5);
+}
+function bjCardHTML(c) {
+  return `<div class="card ${c.red?'red':''}" data-rank="${c.r}${c.s}"><div class="rank">${c.r}</div><div class="suit">${c.s}</div></div>`;
+}
+function bjScore(hand) {
+  let sum = hand.reduce((a,c) => a + c.value, 0);
+  let aces = hand.filter(c => c.r === 'A').length;
+  while (sum > 21 && aces > 0) { sum -= 10; aces--; }
+  return sum;
+}
+function bjRender() {
+  $('bjDealerCards').innerHTML = BJ.dealer.map(bjCardHTML).join('');
+  $('bjPlayerCards').innerHTML = BJ.player.map(bjCardHTML).join('');
+  $('bjDealerScore').textContent = BJ.dealer.length ? bjScore(BJ.dealer) : '-';
+  $('bjPlayerScore').textContent = BJ.player.length ? bjScore(BJ.player) : '-';
+}
+function bjDeal() {
+  if (BJ.phase === 'playing') return;
+  const a = getBet('bj'); if (!checkBet(a)) return;
+  balance -= a; updateBalance(); Sound.chip();
+  BJ.deck = bjNewDeck();
+  BJ.player = [BJ.deck.pop(), BJ.deck.pop()];
+  BJ.dealer = [BJ.deck.pop(), BJ.deck.pop()];
+  BJ.phase = 'playing';
+  bjRender();
+  $('bjBtnDeal').disabled = true;
+  $('bjBetControls').style.opacity = '.5';
+  $('bjActions').style.display = 'flex';
+  $('bjResult').textContent = 'Lượt bạn — Rút hoặc Dừng';
+  $('bjResult').className = 'result-line';
+  Sound.card();
+  // Auto blackjack
+  if (bjScore(BJ.player) === 21) { setTimeout(bjStand, 600); }
+}
+function bjHit() {
+  if (BJ.phase !== 'playing') return;
+  BJ.player.push(BJ.deck.pop());
+  Sound.card();
+  bjRender();
+  if (bjScore(BJ.player) > 21) { setTimeout(bjEnd, 600); }
+}
+function bjStand() {
+  if (BJ.phase !== 'playing') return;
+  BJ.phase = 'dealer';
+  $('bjActions').style.display = 'none';
+  $('bjResult').textContent = 'Nhà cái đang rút...';
+  const tick = () => {
+    if (bjScore(BJ.dealer) < 17) {
+      BJ.dealer.push(BJ.deck.pop());
+      Sound.card();
+      bjRender();
+      setTimeout(tick, 700);
+    } else {
+      setTimeout(bjEnd, 700);
+    }
+  };
+  tick();
+}
+function bjEnd() {
+  const ps = bjScore(BJ.player), ds = bjScore(BJ.dealer);
+  const amt = getBet('bj');
+  let result, win = false, payout = 0, cls = 'result-line', cauType;
+  if (ps > 21) { result = `💥 BẠN QUÁ 21 (${ps})`; cls += ' red'; cauType = 'banker'; }
+  else if (ds > 21) { result = `🎉 NHÀ CÁI QUÁ 21 (${ds})`; cls += ' green'; win = true; payout = amt*2; cauType = 'player'; }
+  else if (ps === 21 && BJ.player.length === 2) { result = `⭐ BLACKJACK!`; cls += ' green'; win = true; payout = Math.floor(amt*2.5); cauType = 'player'; }
+  else if (ps > ds) { result = `🎉 BẠN THẮNG (${ps} vs ${ds})`; cls += ' green'; win = true; payout = amt*2; cauType = 'player'; }
+  else if (ds > ps) { result = `😢 NHÀ CÁI THẮNG (${ds} vs ${ps})`; cls += ' red'; cauType = 'banker'; }
+  else { result = `🤝 HÒA (${ps} vs ${ds})`; cls += ' green'; cauType = 'tie'; payout = amt; win = true; }
+  $('bjResult').textContent = result;
+  $('bjResult').className = cls + (win && (payout - amt) > 0 ? ' big-win' : '');
+  if (payout === amt) { showToast('🤝 Hòa - hoàn cược', 'win'); balance += amt; updateBalance(); }
+  else recordResult(win, payout, amt);
+  BJ.cau.push(cauType);
+  const row = $('bjCauRow'), recent = BJ.cau.slice(-20);
+  row.innerHTML = recent.map(x => `<div class="cau-dot ${x}">${x==='player'?'P':x==='banker'?'B':'T'}</div>`).join('');
+  const pc = BJ.cau.filter(x=>x==='player').length, bc = BJ.cau.filter(x=>x==='banker').length, tc = BJ.cau.filter(x=>x==='tie').length;
+  $('bjCauStats').textContent = `P: ${pc} - B: ${bc} - T: ${tc}`;
+  BJ.phase = 'idle';
+  $('bjBtnDeal').disabled = false;
+  $('bjBetControls').style.opacity = '1';
+  $('bjActions').style.display = 'none';
+}
+
+/* ==================================================
+   XOC DIA
+================================================== */
+const XD = { selected:null, phase:'betting', countdown:30, timer:null, cau:[] };
+function xdStartTimer() {
+  XD.countdown = 30; XD.phase = 'betting'; XD.selected = null;
+  document.querySelectorAll('#view-xocdia .bet-cell').forEach(x => x.classList.remove('selected'));
+  $('xdResult').textContent = 'Chọn Chẵn hoặc Lẻ';
+  $('xdResult').className = 'result-line';
+  $('xdBtnConfirm').disabled = true; $('xdBtnConfirm').textContent = 'XÁC NHẬN CƯỢC';
+  document.querySelectorAll('#view-xocdia .coin').forEach(c => { c.textContent = '?'; c.className = 'coin white'; });
+  xdUpdateTimer();
+  clearInterval(XD.timer);
+  XD.timer = setInterval(() => {
+    XD.countdown--; xdUpdateTimer();
+    if (XD.countdown <= 0) { clearInterval(XD.timer); if (XD.selected) xdRoll(); else xdStartTimer(); }
+  }, 1000);
+}
+function xdUpdateTimer() {
+  const el = $('xdTimer');
+  el.textContent = XD.countdown + 's';
+  el.className = 'timer' + (XD.countdown <= 5 ? ' urgent' : '');
+}
+function xdSelect(el, bet) {
+  if (XD.phase !== 'betting') return;
+  Sound.click();
+  document.querySelectorAll('#view-xocdia .bet-cell').forEach(x => x.classList.remove('selected'));
+  el.classList.add('selected'); XD.selected = bet;
+  $('xdBtnConfirm').disabled = false;
+}
+function xdPlaceBet() {
+  if (!XD.selected) return;
+  const a = getBet('xd'); if (!checkBet(a)) return;
+  balance -= a; updateBalance(); Sound.chip();
+  $('xdBtnConfirm').disabled = true; $('xdBtnConfirm').textContent = 'ĐÃ ĐẶT CƯỢC';
+  showToast(`Đã đặt ${fmt(a)}`);
+}
+async function xdRoll() {
+  if (XD.phase === 'rolling') return;
+  XD.phase = 'rolling'; clearInterval(XD.timer);
+  $('xdTimer').textContent = 'XÓC...'; $('xdTimer').className = 'timer waiting';
+  Sound.dice();
+  const coins = [$('xdC1'),$('xdC2'),$('xdC3'),$('xdC4')];
+  coins.forEach(c => c.classList.add('rolling'));
+  const int = setInterval(() => {
+    coins.forEach(c => {
+      const red = Math.random() < 0.5;
+      c.className = 'coin rolling ' + (red ? 'red' : 'white');
+      c.textContent = red ? '●' : '○';
+    });
+  }, 100);
+  await new Promise(r => setTimeout(r, 1400));
+  clearInterval(int);
+  const results = [0,0,0,0].map(() => Math.random() < 0.5 ? 1 : 0);
+  coins.forEach((c,i) => {
+    c.classList.remove('rolling');
+    c.className = 'coin ' + (results[i] ? 'red' : 'white');
+    c.textContent = results[i] ? '●' : '○';
+  });
+  const redCount = results.filter(x=>x===1).length;
+  const isChan = redCount % 2 === 0, amt = getBet('xd');
+  let win = false, payout = 0;
+  if ((XD.selected === 'chan' && isChan) || (XD.selected === 'le' && !isChan)) {
+    win = true; payout = Math.floor(amt * 1.95);
+  }
+  $('xdResult').textContent = `${isChan ? 'CHẴN' : 'LẺ'} (${redCount} đỏ)`;
+  $('xdResult').className = 'result-line ' + (isChan ? 'green' : 'red') + (win ? ' big-win' : '');
+  recordResult(win, payout, amt);
+  XD.cau.push(isChan ? 'chan' : 'le');
+  const row = $('xdCauRow'), recent = XD.cau.slice(-20);
+  row.innerHTML = recent.map(x => `<div class="cau-dot ${x}">${x==='chan'?'C':'L'}</div>`).join('');
+  const cc = XD.cau.filter(x=>x==='chan').length, lc = XD.cau.filter(x=>x==='le').length;
+  $('xdCauStats').textContent = `C: ${cc} - L: ${lc}`;
+  setTimeout(xdStartTimer, 2500);
+}
+xdStartTimer();
+
+/* ==================================================
+   BACCARAT
+================================================== */
+const BAC = { selected:null, phase:'betting', countdown:30, timer:null, cau:[] };
+function bacStartTimer() {
+  BAC.countdown = 30; BAC.phase = 'betting'; BAC.selected = null;
+  document.querySelectorAll('#view-baccarat .bet-cell').forEach(x => x.classList.remove('selected'));
+  $('bacResult').textContent = 'Chọn Player, Banker hoặc Tie';
+  $('bacResult').className = 'result-line';
+  $('bacBtnConfirm').disabled = true; $('bacBtnConfirm').textContent = 'XÁC NHẬN CƯỢC';
+  $('bacPlayerCards').innerHTML = ''; $('bacBankerCards').innerHTML = '';
+  $('bacPlayerScore').textContent = '-'; $('bacBankerScore').textContent = '-';
+  bacUpdateTimer();
+  clearInterval(BAC.timer);
+  BAC.timer = setInterval(() => {
+    BAC.countdown--; bacUpdateTimer();
+    if (BAC.countdown <= 0) { clearInterval(BAC.timer); if (BAC.selected) bacDeal(); else bacStartTimer(); }
+  }, 1000);
+}
+function bacUpdateTimer() {
+  const el = $('bacTimer');
+  el.textContent = BAC.countdown + 's';
+  el.className = 'timer' + (BAC.countdown <= 5 ? ' urgent' : '');
+}
+function bacSelect(el, bet) {
+  if (BAC.phase !== 'betting') return;
+  Sound.click();
+  document.querySelectorAll('#view-baccarat .bet-cell').forEach(x => x.classList.remove('selected'));
+  el.classList.add('selected'); BAC.selected = bet;
+  $('bacBtnConfirm').disabled = false;
+}
+function bacPlaceBet() {
+  if (!BAC.selected) return;
+  const a = getBet('bac'); if (!checkBet(a)) return;
+  balance -= a; updateBalance(); Sound.chip();
+  $('bacBtnConfirm').disabled = true; $('bacBtnConfirm').textContent = 'ĐÃ ĐẶT CƯỢC';
+  showToast(`Đã đặt ${fmt(a)}`);
+}
+function bacDraw() {
+  const R = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'], S = ['♠','♥','♦','♣'];
+  const r = R[rnd(13)], s = S[rnd(4)];
+  return { r, s, value: r==='A'?1:(['J','Q','K'].includes(r)?0:parseInt(r)), red: s==='♥'||s==='♦' };
+}
+function bacCardHTML(c) {
+  return `<div class="card ${c.red?'red':''}" data-rank="${c.r}${c.s}"><div class="rank">${c.r}</div><div class="suit">${c.s}</div></div>`;
+}
+function bacScore(h) { return h.reduce((a,c) => a + c.value, 0) % 10; }
+async function bacDeal() {
+  if (BAC.phase === 'rolling') return;
+  BAC.phase = 'rolling'; clearInterval(BAC.timer);
+  $('bacTimer').textContent = 'CHIA...'; $('bacTimer').className = 'timer waiting';
+  const pc = [], bc = [];
+  const show = async (side, card) => {
+    Sound.card();
+    if (side === 'p') { pc.push(card); $('bacPlayerCards').innerHTML = pc.map(bacCardHTML).join(''); }
+    else { bc.push(card); $('bacBankerCards').innerHTML = bc.map(bacCardHTML).join(''); }
+    await new Promise(r => setTimeout(r, 400));
+  };
+  await show('p', bacDraw()); await show('b', bacDraw());
+  await show('p', bacDraw()); await show('b', bacDraw());
+  let ps = bacScore(pc), bs = bacScore(bc);
+  if (ps < 8 && bs < 8) {
+    if (ps <= 5) {
+      await show('p', bacDraw()); ps = bacScore(pc);
+      if (bs < 6) { await show('b', bacDraw()); bs = bacScore(bc); }
+    } else if (bs <= 5) {
+      await show('b', bacDraw()); bs = bacScore(bc);
+    }
+  }
+  $('bacPlayerScore').textContent = ps;
+  $('bacBankerScore').textContent = bs;
+  const amt = getBet('bac');
+  let result, win = false, payout = 0, cls = 'result-line', cauType;
+  if (ps > bs) {
+    result = 'PLAYER THẮNG'; cls += ' xiu'; cauType = 'player';
+    if (BAC.selected === 'player') { win = true; payout = amt*2; }
+  } else if (bs > ps) {
+    result = 'BANKER THẮNG'; cls += ' tai'; cauType = 'banker';
+    if (BAC.selected === 'banker') { win = true; payout = Math.floor(amt*1.95); }
+  } else {
+    result = 'HÒA (TIE)'; cls += ' green'; cauType = 'tie';
+    if (BAC.selected === 'tie') { win = true; payout = amt*9; }
+  }
+  $('bacResult').textContent = result + ` (P:${ps} - B:${bs})`;
+  $('bacResult').className = cls + (win ? ' big-win' : '');
+  recordResult(win, payout, amt);
+  BAC.cau.push(cauType);
+  const row = $('bacCauRow'), recent = BAC.cau.slice(-20);
+  row.innerHTML = recent.map(x => `<div class="cau-dot ${x}">${x==='player'?'P':x==='banker'?'B':'T'}</div>`).join('');
+  const pc2 = BAC.cau.filter(x=>x==='player').length, bc2 = BAC.cau.filter(x=>x==='banker').length, tc = BAC.cau.filter(x=>x==='tie').length;
+  $('bacCauStats').textContent = `P: ${pc2} - B: ${bc2} - T: ${tc}`;
+  setTimeout(bacStartTimer, 3000);
+}
+bacStartTimer();
+
+/* ==================================================
+   SLOT
+================================================== */
+const SLOT_SYMBOLS = ['🍒','🍋','🍇','⭐','💎','7️⃣'];
+const SLOT_PAYOUT = { '🍒':10,'🍋':15,'🍇':20,'⭐':50,'💎':100,'7️⃣':200 };
+let slotBusy = false;
+async function slotSpin() {
+  if (slotBusy) return;
+  const a = getBet('slot'); if (!checkBet(a)) return;
+  slotBusy = true;
+  const btn = $('slotBtnSpin'); btn.disabled = true;
+  balance -= a; updateBalance();
+  const reels = [$('slotR1'),$('slotR2'),$('slotR3')];
+  reels.forEach(r => { r.classList.add('spinning'); r.classList.remove('win'); });
+  const spinInt = setInterval(() => Sound.spin(), 80);
+  const int = setInterval(() => reels.forEach(r => r.textContent = SLOT_SYMBOLS[rnd(6)]), 70);
+  await new Promise(r => setTimeout(r, 1800));
+  clearInterval(int); clearInterval(spinInt);
+  const results = [0,0,0].map(() => SLOT_SYMBOLS[rnd(6)]);
+  reels.forEach((r,i) => { r.textContent = results[i]; r.classList.remove('spinning'); });
+  let win = false, payout = 0, msg = '';
+  if (results[0] === results[1] && results[1] === results[2]) {
+    win = true; payout = a * SLOT_PAYOUT[results[0]];
+    msg = `🎉 JACKPOT ${results[0]} x${SLOT_PAYOUT[results[0]]}`;
+    reels.forEach(r => r.classList.add('win'));
+  } else if (results[0] === results[1] || results[1] === results[2] || results[0] === results[2]) {
+    win = true; payout = a*2;
+    msg = '✨ 2 giống - x2';
+    reels.forEach(r => r.classList.add('win'));
+  } else { msg = '❌ Không trúng'; }
+  $('slotResult').textContent = msg;
+  $('slotResult').className = 'result-line ' + (win ? 'green' : 'red') + (win ? ' big-win' : '');
+  recordResult(win, payout, a);
+  setTimeout(() => { btn.disabled = false; slotBusy = false; }, 1000);
+}
+
+/* ==================================================
+   SPORTS
+================================================== */
+const SPORTS_MATCHES = [
+  { id:1, home:'Manchester United', away:'Liverpool', time:'20:00 Hôm nay', odds:{ home:2.10, draw:3.40, away:3.20 } },
+  { id:2, home:'Real Madrid', away:'Barcelona', time:'22:30 Hôm nay', odds:{ home:1.95, draw:3.60, away:3.50 } },
+  { id:3, home:'Bayern Munich', away:'Dortmund', time:'01:00 Mai', odds:{ home:1.75, draw:3.80, away:4.20 } },
+  { id:4, home:'PSG', away:'Marseille', time:'02:00 Mai', odds:{ home:1.60, draw:4.00, away:5.00 } },
+  { id:5, home:'Juventus', away:'Inter Milan', time:'02:45 Mai', odds:{ home:2.40, draw:3.20, away:2.90 } }
+];
+const SPORTS = { selected:null };
+function renderSports() {
+  $('matchList').innerHTML = SPORTS_MATCHES.map(m => `
+    <div class="match">
+      <div class="match-info">
+        <div class="teams">⚽ ${m.home} vs ${m.away}</div>
+        <div class="time">🕐 ${m.time}</div>
+      </div>
+      <div class="match-odds">
+        <div class="odd-btn" data-match="${m.id}" data-side="home" onclick="sportSelect(this)"><span class="odd-label">1</span><span class="odd-value">${m.odds.home}</span></div>
+        <div class="odd-btn" data-match="${m.id}" data-side="draw" onclick="sportSelect(this)"><span class="odd-label">X</span><span class="odd-value">${m.odds.draw}</span></div>
+        <div class="odd-btn" data-match="${m.id}" data-side="away" onclick="sportSelect(this)"><span class="odd-label">2</span><span class="odd-value">${m.odds.away}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+function sportSelect(el) {
+  Sound.click();
+  document.querySelectorAll('#matchList .odd-btn').forEach(x => x.classList.remove('selected'));
+  el.classList.add('selected');
+  SPORTS.selected = { match: parseInt(el.dataset.match), side: el.dataset.side };
+  $('sportBtnConfirm').disabled = false;
+}
+function sportPlaceBet() {
+  if (!SPORTS.selected) return;
+  const a = getBet('sport'); if (!checkBet(a)) return;
+  balance -= a; updateBalance(); Sound.chip();
+  $('sportBtnConfirm').disabled = true;
+  const match = SPORTS_MATCHES.find(m => m.id === SPORTS.selected.match);
+  const odd = match.odds[SPORTS.selected.side];
+  const r = Math.random();
+  const winner = r < 0.45 ? 'home' : r < 0.70 ? 'draw' : 'away';
+  const win = winner === SPORTS.selected.side;
+  const payout = win ? Math.floor(a * odd) : 0;
+  const winnerName = winner === 'draw' ? 'Hòa' : (winner === 'home' ? match.home : match.away);
+  $('sportResult').textContent = `Kết quả: ${winnerName} — ${win ? 'THẮNG' : 'THUA'}`;
+  $('sportResult').className = 'result-line ' + (win ? 'green' : 'red') + (win ? ' big-win' : '');
+  recordResult(win, payout, a);
+  document.querySelectorAll('#matchList .odd-btn').forEach(x => x.classList.remove('selected'));
+  SPORTS.selected = null;
+}
+renderSports();
+
+/* ==================================================
+   LOTTERY
+================================================== */
+const LOT = { selected:null };
+function renderLottery() {
+  let html = '';
+  for (let i = 0; i < 100; i++) {
+    html += `<div class="lottery-num" data-num="${i}" onclick="lotSelect(this)">${String(i).padStart(2,'0')}</div>`;
+  }
+  $('lotteryGrid').innerHTML = html;
+}
+function lotSelect(el) {
+  Sound.click();
+  document.querySelectorAll('#lotteryGrid .lottery-num').forEach(x => x.classList.remove('selected'));
+  el.classList.add('selected');
+  LOT.selected = parseInt(el.dataset.num);
+  $('lotteryResult').textContent = `Đã chọn số ${String(LOT.selected).padStart(2,'0')}`;
+  $('lotteryResult').className = 'result-line';
+  $('lotBtnConfirm').disabled = false;
+}
+function lotteryPlaceBet() {
+  if (LOT.selected === null) return;
+  const a = getBet('lot'); if (!checkBet(a)) return;
+  balance -= a; updateBalance(); Sound.chip();
+  const winNum = rnd(100);
+  const win = winNum === LOT.selected;
+  const payout = win ? a * 70 : 0;
+  $('lotteryResult').textContent = `Số trúng: ${String(winNum).padStart(2,'0')} — ${win ? '🎉 TRÚNG!' : '❌ Không trúng'}`;
+  $('lotteryResult').className = 'result-line ' + (win ? 'green' : 'red') + (win ? ' big-win' : '');
+  document.querySelectorAll('#lotteryGrid .lottery-num').forEach(x => {
+    if (parseInt(x.dataset.num) === winNum) x.classList.add('win');
+  });
+  recordResult(win, payout, a);
+  setTimeout(() => {
+    document.querySelectorAll('#lotteryGrid .lottery-num').forEach(x => x.classList.remove('selected','win'));
+    LOT.selected = null;
+    $('lotteryResult').textContent = 'Chưa chọn số';
+    $('lotteryResult').className = 'result-line';
+    $('lotBtnConfirm').disabled = true;
+  }, 3000);
+}
+renderLottery();
+
+/* ==================================================
+   INIT
+================================================== */
+updateBalance();
+updateStats();
+loadQuests();
+updateVip();
+initLeaderboard();
+
+document.addEventListener('click', () => Sound.init(), { once: true });
+</script>
+</body>
+</html>
