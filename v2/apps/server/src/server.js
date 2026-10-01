@@ -43,7 +43,8 @@ const CONFIG = {
 };
 
 const schema = `
-CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, username TEXT UNIQUE NOT NULL, password_hash TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'PLAYER', status TEXT NOT NULL DEFAULT 'ACTIVE', created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, username TEXT UNIQUE NOT NULL, email TEXT UNIQUE, password_hash TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'PLAYER', status TEXT NOT NULL DEFAULT 'ACTIVE', created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email TEXT;
 CREATE TABLE IF NOT EXISTS characters(id SERIAL PRIMARY KEY, user_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE, name TEXT UNIQUE NOT NULL, level INT NOT NULL DEFAULT 1, exp BIGINT NOT NULL DEFAULT 0, coins BIGINT NOT NULL DEFAULT 1000000, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
 CREATE TABLE IF NOT EXISTS coin_ledger(id BIGSERIAL PRIMARY KEY, user_id INT REFERENCES users(id) ON DELETE CASCADE, amount BIGINT NOT NULL, balance_after BIGINT, type TEXT NOT NULL, reason TEXT, actor_id INT, round_id BIGINT, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
 CREATE TABLE IF NOT EXISTS rounds(id BIGSERIAL PRIMARY KEY, phase TEXT NOT NULL, started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), phase_ends_at TIMESTAMPTZ NOT NULL, dice JSONB, sum INT, result_type TEXT, forced_by INT, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
@@ -79,6 +80,9 @@ ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS avatar TEXT;
 ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS text TEXT;
 ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS kind TEXT DEFAULT 'PLAYER';
 ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ NOT NULL DEFAULT NOW();
+ALTER TABLE chat_messages ALTER COLUMN thread_id DROP NOT NULL;
+ALTER TABLE chat_messages ALTER COLUMN sender_type SET DEFAULT 'PLAYER';
+ALTER TABLE chat_messages ALTER COLUMN message SET DEFAULT '';
 
 `;
 
@@ -94,7 +98,7 @@ async function seedAdmin(){
   if(!username||!password) return;
   const p=pool; const q=await p.query('SELECT id FROM users WHERE username=$1',[username]);
   if(q.rowCount) { await p.query('UPDATE users SET role=\'SUPER_ADMIN\',status=\'ACTIVE\' WHERE username=$1',[username]); return; }
-  const hash=await bcrypt.hash(password,12); const u=await p.query('INSERT INTO users(username,password_hash,role) VALUES($1,$2,\'SUPER_ADMIN\') RETURNING id',[username,hash]);
+  const hash=await bcrypt.hash(password,12); const email=(username+'@admin.local').slice(0,255); const u=await p.query('INSERT INTO users(username,email,password_hash,role) VALUES($1,$2,$3,\'SUPER_ADMIN\') RETURNING id',[username,email,hash]);
   const cname=(username+'_ADMIN').slice(0,24); await p.query('INSERT INTO characters(user_id,name,coins) VALUES($1,$2,0)',[u.rows[0].id,cname]);
 }
 function tokenFor(u){return jwt.sign({sub:u.id,role:u.role,username:u.username},JWT_SECRET,{expiresIn:'12h'});}
@@ -200,7 +204,7 @@ io.on('connection',async socket=>{
 });
 
 app.get('/health',(req,res)=>res.json({ok:true,service:'sicbo-server-v2',authoritative:true}));
-app.post('/api/auth/register',async(req,res)=>{try{const {username,password,characterName}=req.body||{};if(!/^[a-zA-Z0-9_]{4,24}$/.test(username||''))return res.status(400).json({error:'USERNAME_INVALID'});if(typeof password!=='string'||password.length<8)return res.status(400).json({error:'PASSWORD_TOO_SHORT'});if(!/^[\\p{L}0-9 _-]{2,24}$/u.test(characterName||''))return res.status(400).json({error:'CHARACTER_NAME_INVALID'});const p=await db();const hash=await bcrypt.hash(password,12);const c=await p.connect();try{await c.query('BEGIN');const u=await c.query('INSERT INTO users(username,password_hash) VALUES($1,$2) RETURNING id,username,role,status',[username,hash]);const ch=await c.query('INSERT INTO characters(user_id,name,coins) VALUES($1,$2,1000000) RETURNING id,name,level,exp,coins',[u.rows[0].id,characterName]);await c.query('INSERT INTO coin_ledger(user_id,amount,balance_after,type,reason) VALUES($1,$2,$3,\'SIGNUP_REWARD\',\'Initial virtual demo coins\')',[u.rows[0].id,1000000,1000000]);await c.query('COMMIT');res.status(201).json({token:tokenFor(u.rows[0]),user:u.rows[0],character:ch.rows[0]});}catch(e){await c.query('ROLLBACK');if(e.code==='23505')return res.status(409).json({error:'USERNAME_OR_CHARACTER_EXISTS'});throw e}finally{c.release()}}catch(e){console.error(e);res.status(500).json({error:'SERVER_ERROR'})}});
+app.post('/api/auth/register',async(req,res)=>{try{const {username,password,characterName}=req.body||{};if(!/^[a-zA-Z0-9_]{4,24}$/.test(username||''))return res.status(400).json({error:'USERNAME_INVALID'});if(typeof password!=='string'||password.length<8)return res.status(400).json({error:'PASSWORD_TOO_SHORT'});if(!/^[\\p{L}0-9 _-]{2,24}$/u.test(characterName||''))return res.status(400).json({error:'CHARACTER_NAME_INVALID'});const p=await db();const hash=await bcrypt.hash(password,12);const c=await p.connect();try{await c.query('BEGIN');const email=(username+'@demo.local').slice(0,255); const u=await c.query('INSERT INTO users(username,email,password_hash) VALUES($1,$2,$3) RETURNING id,username,role,status',[username,email,hash]);const ch=await c.query('INSERT INTO characters(user_id,name,coins) VALUES($1,$2,1000000) RETURNING id,name,level,exp,coins',[u.rows[0].id,characterName]);await c.query('INSERT INTO coin_ledger(user_id,amount,balance_after,type,reason) VALUES($1,$2,$3,\'SIGNUP_REWARD\',\'Initial virtual demo coins\')',[u.rows[0].id,1000000,1000000]);await c.query('COMMIT');res.status(201).json({token:tokenFor(u.rows[0]),user:u.rows[0],character:ch.rows[0]});}catch(e){await c.query('ROLLBACK');if(e.code==='23505')return res.status(409).json({error:'USERNAME_OR_CHARACTER_EXISTS'});throw e}finally{c.release()}}catch(e){console.error(e);res.status(500).json({error:'SERVER_ERROR'})}});
 app.post('/api/auth/login',async(req,res)=>{try{const {username,password}=req.body||{};const p=await db();const q=await p.query('SELECT u.*,c.id character_id,c.name character_name,c.level,c.exp,c.coins FROM users u LEFT JOIN characters c ON c.user_id=u.id WHERE u.username=$1',[username]);const u=q.rows[0];if(!u||!(await bcrypt.compare(password||'',u.password_hash)))return res.status(401).json({error:'INVALID_CREDENTIALS'});if(u.status!=='ACTIVE')return res.status(403).json({error:'ACCOUNT_DISABLED'});res.json({token:tokenFor(u),user:{id:u.id,username:u.username,role:u.role,status:u.status},character:{id:u.character_id,name:u.character_name,level:u.level,exp:u.exp,coins:Number(u.coins)}})}catch(e){console.error(e);res.status(500).json({error:'SERVER_ERROR'})}});
 app.get('/api/me',auth,async(req,res)=>{const me=await playerSnapshot(req.user.sub);if(!me)return res.status(404).json({error:'NOT_FOUND'});res.json(me)});
 app.get('/api/round/current',auth,async(req,res)=>res.json({round:publicRound(currentRound),bets:await getCurrentBets(req.user.sub)}));
