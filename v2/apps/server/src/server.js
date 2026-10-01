@@ -14,7 +14,7 @@ import crypto from 'crypto';
 
 const { Pool } = pg;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT = path.resolve(__dirname, '../..');
+const ROOT = path.resolve(__dirname, '../../..');
 const PLAYER = path.join(ROOT, 'apps/player');
 const PORT = Number(process.env.PORT || 3000);
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-only-change-me-change-me';
@@ -335,7 +335,7 @@ async function saveChat(m){
   try{
     const p=await db();
     const senderType=m.kind==='BOT'?'bot':(m.kind==='ADMIN'?'admin':'user');
-    await p.query(`INSERT INTO chat_messages(thread_id,sender_user_id,sender_type,message,user_id,bot_id,name,avatar,text,kind) VALUES(NULL,$1,$2,$3,$1,$4,$5,$6,$3,$7)`,[m.userId||null,senderType,m.text,m.botId||null,m.name||'Player',m.avatar||'🙂',m.kind||'PLAYER']);
+    await p.query(`INSERT INTO chat_messages(thread_id,sender_user_id,sender_type,message) VALUES(NULL,$1,$2,$3)`,[m.userId||null,senderType,m.text]);
   }catch(e){console.error('chat save',e.message)}
 }
 async function recentChat(){
