@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sicbo
+      POSTGRES_USER: sicbo
+      POSTGRES_PASSWORD: sicbo
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+  app:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgresql://sicbo:sicbo@postgres:5432/sicbo
+      JWT_SECRET: CHANGE_THIS_TO_A_LONG_RANDOM_SECRET
+      CORS_ORIGIN: http://localhost:3000
+      ADMIN_SEED_USER: admin
+      ADMIN_SEED_PASSWORD: change-this-password
+    ports: ["3000:3000"]
+    depends_on: [postgres]
+volumes:
+  pgdata:

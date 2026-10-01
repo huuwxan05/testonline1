@@ -1,0 +1,8 @@
+{
+  "name":"sicbo-3d-commercial-v2",
+  "private":true,
+  "version":"2.0.0",
+  "workspaces":["apps/server"],
+  "scripts":{"start":"npm --prefix apps/server start","dev":"npm --prefix apps/server run dev"},
+  "engines":{"node":">=20"}
+}

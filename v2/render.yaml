@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: sicbo-3d-v2
+    runtime: node
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sicbo-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: https://sicbo-3d-v2.onrender.com
+      - key: ADMIN_SEED_USER
+        sync: false
+      - key: ADMIN_SEED_PASSWORD
+        sync: false
+      - key: BETTING_SECONDS
+        value: "20"
+      - key: SHAKE_SECONDS
+        value: "3"
+      - key: PEEK_SECONDS
+        value: "12"
+      - key: RESULT_SECONDS
+        value: "6"
+    healthCheckPath: /health
+
+databases:
+  - name: sicbo-db
+    databaseName: sicbo
+    user: sicbo
